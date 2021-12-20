@@ -27,3 +27,16 @@ We are focusing on some protocols that are well known, and have great communitie
 
 We may also check out some NFTs, like Bored Apes or Crypto Punks, and figure out a way to attribute
 a score to that.
+
+# Open Questions
+- What is the best way to source accounts? For example, Maybe 5000 account have used AAVE. Right now
+it is unlikely that we make subgraphs that contain multiple protocols. So for the 4 protocols we have
+listed in "Protocols Evaluated" - we will have 4 sets of different users. Obviously we can just add
+them all together. But there has got to be a better way to think about accounts. It will need some
+thinking.
+- How will we stitch together scores?
+- What other data sources will we use, other than Subgraphs?
+- What other chains and/or protocols on other EVM based chains should we evaluate?
+- How do we give scores to existing smart contracts, such as AAVE or COMP core contracts?
+  - Where do we get a registry of these contracts? Do we build it? Can we use Everest V2? Is there
+    another reliable source, such as Etherscan (which comes with centralization risks).
