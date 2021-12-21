@@ -14,3 +14,6 @@
 
 **Bonuses**
 - Standard bonuses, 10%, double, combination bonuses. that can be shared between different scoring metrics
+
+**Token Balances**
+- We will not be recording token balances for now, as they are a drain on indexing. And we can infer important data from main events happening. a token transfer itself, can be somewhat meaningless.

@@ -15,3 +15,8 @@ There are some downsides:
 - Start with a single, normal subgraph for AAVE
 - Expand to a second one, where they both inherit from packages at the root level
 - After going to a third protocol added, then consider something like Lerna (although I've never loved it... there could be another solution that is just as good)
+
+
+# Mappings
+- files from `aave-v2-subgraph` are from their subgraph. `https://github.com/aave/protocol-v2-subgraph`
+- Slighly adjusted to work for our scenario. TBD how much they need to be adjusted, they might not look the same fairly quickly.
