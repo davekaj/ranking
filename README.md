@@ -22,11 +22,38 @@ We are focusing on some protocols that are well known, and have great communitie
 
 1. AAVE (and LEND)
 2. Compound
-3. Uniswap
+3. Uniswap (V1 and V2)
 4. Maker
 
 We may also check out some NFTs, like Bored Apes or Crypto Punks, and figure out a way to attribute
 a score to that.
+
+# Scoring AAVE
+- AAVE liquidity mining
+  - time to sell - a token / time weighted score on how quickly you throw it away
+  - or do they instantly stake their aave? good question
+- AAVE staking
+  - score for staking / time
+  - bonus for early adoption
+- LEND
+  - was part of token sale, bonus
+  - time weighted holder
+  - bonus for converting AAVE to LEND. with a bonus for doing so on first day
+- Usage
+  - count of mints
+  - count of burns
+  - count of borrows
+  - count of repays
+  - timing of all those 4. time wieghted score to see how long they been using the protocol
+  - maybes
+    - swaps
+    - rebalanceStableBorrowRate
+    - liquidationCAll
+    - flashLoan
+
+Not included
+- Airdrop (unless there was a LEND airdrop)
+
 
 # Open Questions
 - What is the best way to source accounts? For example, Maybe 5000 account have used AAVE. Right now
