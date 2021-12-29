@@ -14,7 +14,7 @@ import {
   MapAssetPool,
   Reserve,
 } from '../../../generated/schema';
-import { getOrInitUser, getOrInitUserReserveWithIds } from '../../helpers/initializers';
+import { getOrInitUser, getOrInitUserReserveWithIds } from '../helpers/initializers';
 import { getHistoryEntityId, getReserveId } from '../../utils/id-generation';
 
 export function handleAssetConfigUpdated(event: AssetConfigUpdated): void {

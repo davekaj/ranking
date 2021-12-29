@@ -25,7 +25,7 @@ import {
   getOrInitUser,
   getOrInitUserReserve,
   getPoolByContract,
-} from '../../helpers/initializers';
+} from '../helpers/initializers';
 import {
   Borrow as BorrowAction,
   Deposit as DepositAction,
@@ -39,7 +39,7 @@ import {
   UsageAsCollateral as UsageAsCollateralAction,
 } from '../../../generated/schema';
 import { EventTypeRef, getHistoryId } from '../../utils/id-generation';
-import { calculateGrowth } from '../../helpers/math';
+import { calculateGrowth } from '../helpers/math';
 
 export function handleDeposit(event: Deposit): void {
   let poolReserve = getOrInitReserve(event.params.reserve, event);

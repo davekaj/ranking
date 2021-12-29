@@ -1,9 +1,3 @@
-type ExampleEntity @entity {
-  id: ID!
-  count: BigInt!
-  newAddress: Bytes! # address
-}
-
 # To add
 # overall score
 # relation links to all other relevant entities
@@ -50,158 +44,195 @@ interface UserTransaction {
   timestamp: Int!
 }
 
-type Deposit implements UserTransaction @entity {
-  """
-  tx hash
-  """
+type Protocol @entity {
   id: ID!
-  pool: Pool!
-  user: User!
-  onBehalfOf: User!
-  reserve: Reserve!
-  userReserve: UserReserve!
-  amount: BigInt!
-  referrer: Referrer
-  timestamp: Int!
 }
 
-# TODO: check nomenclature for new v2
-type RedeemUnderlying implements UserTransaction @entity {
-  """
-  tx hash
-  """
+type Pool @entity {
   id: ID!
-  pool: Pool!
-  user: User!
-  onBehalfOf: User!
-  reserve: Reserve!
-  userReserve: UserReserve!
-  amount: BigInt!
-  timestamp: Int!
+  protocol: Protocol!
+  lendingPool: Bytes
+  # lendingPoolCollateralManager: Bytes
+  # lendingPoolConfiguratorImpl: Bytes
+  # lendingPoolImpl: Bytes
+  # lendingPoolConfigurator: Bytes
+  # proxyPriceProvider: Bytes
+  # lendingRateOracle: Bytes
+  # configurationAdmin: Bytes
+  # ethereumAddress: Bytes
+  # emergencyAdmin: Bytes
+  # history: [PoolConfigurationHistoryItem!]! @derivedFrom(field: "pool")
+  lastUpdateTimestamp: Int!
+
+  # reserves: [Reserve!]! @derivedFrom(field: "pool")
+  # depositHistory: [Deposit!]! @derivedFrom(field: "pool")
+  # redeemUnderlyingHistory: [RedeemUnderlying!]! @derivedFrom(field: "pool")
+  # borrowHistory: [Borrow!]! @derivedFrom(field: "pool")
+  # swapHistory: [Swap!]! @derivedFrom(field: "pool")
+  # usageAsCollateralHistory: [UsageAsCollateral!]! @derivedFrom(field: "pool")
+  # rebalanceStableBorrowRateHistory: [RebalanceStableBorrowRate!]! @derivedFrom(field: "pool")
+  # repayHistory: [Repay!]! @derivedFrom(field: "pool")
+  # flashLoanHistory: [FlashLoan!]! @derivedFrom(field: "pool")
+  # liquidationCallHistory: [LiquidationCall!]! @derivedFrom(field: "pool")
+  # originationFeeLiquidationHistory: [OriginationFeeLiquidation!]! @derivedFrom(field: "pool")
+
+  active: Boolean!
+  paused: Boolean!
 }
 
-type Borrow implements UserTransaction @entity {
-  """
-  tx hash
-  """
-  id: ID!
-  pool: Pool!
-  user: User!
-  onBehalfOf: User!
-  reserve: Reserve!
-  userReserve: UserReserve!
-  amount: BigInt!
-  borrowRate: BigInt!
-  borrowRateMode: BorrowRateMode!
-  referrer: Referrer
-  timestamp: Int!
-  stableTokenDebt: BigInt!
-  variableTokenDebt: BigInt!
-}
 
-type Swap implements UserTransaction @entity {
-  """
-  tx hash
-  """
-  id: ID!
-  pool: Pool!
-  user: User!
-  reserve: Reserve!
-  userReserve: UserReserve!
-  borrowRateModeFrom: BorrowRateMode!
-  borrowRateModeTo: BorrowRateMode!
-  stableBorrowRate: BigInt!
-  variableBorrowRate: BigInt!
-  timestamp: Int!
-}
+# type Deposit implements UserTransaction @entity {
+#   """
+#   tx hash
+#   """
+#   id: ID!
+#   pool: Pool!
+#   user: User!
+#   onBehalfOf: User!
+#   reserve: Reserve!
+#   userReserve: UserReserve!
+#   amount: BigInt!
+#   referrer: Referrer
+#   timestamp: Int!
+# }
 
-type UsageAsCollateral implements UserTransaction @entity {
-  """
-  tx hash
-  """
-  id: ID!
-  pool: Pool!
-  user: User!
-  reserve: Reserve!
-  userReserve: UserReserve!
-  fromState: Boolean!
-  toState: Boolean!
-  timestamp: Int!
-}
+# # TODO: check nomenclature for new v2
+# type RedeemUnderlying implements UserTransaction @entity {
+#   """
+#   tx hash
+#   """
+#   id: ID!
+#   pool: Pool!
+#   user: User!
+#   onBehalfOf: User!
+#   reserve: Reserve!
+#   userReserve: UserReserve!
+#   amount: BigInt!
+#   timestamp: Int!
+# }
 
-type RebalanceStableBorrowRate implements UserTransaction @entity {
-  """
-  tx hash
-  """
-  id: ID!
-  pool: Pool!
-  user: User!
-  reserve: Reserve!
-  userReserve: UserReserve!
-  borrowRateFrom: BigInt!
-  borrowRateTo: BigInt!
-  #accruedBorrowInterest: BigInt!
-  timestamp: Int!
-}
+# type Borrow implements UserTransaction @entity {
+#   """
+#   tx hash
+#   """
+#   id: ID!
+#   pool: Pool!
+#   user: User!
+#   onBehalfOf: User!
+#   reserve: Reserve!
+#   userReserve: UserReserve!
+#   amount: BigInt!
+#   borrowRate: BigInt!
+#   borrowRateMode: BorrowRateMode!
+#   referrer: Referrer
+#   timestamp: Int!
+#   stableTokenDebt: BigInt!
+#   variableTokenDebt: BigInt!
+# }
 
-type Repay implements UserTransaction @entity {
-  """
-  tx hash
-  """
-  id: ID!
-  pool: Pool!
-  user: User!
-  onBehalfOf: User!
-  reserve: Reserve!
-  userReserve: UserReserve!
-  amount: BigInt!
-  timestamp: Int!
-}
+# type Swap implements UserTransaction @entity {
+#   """
+#   tx hash
+#   """
+#   id: ID!
+#   pool: Pool!
+#   user: User!
+#   reserve: Reserve!
+#   userReserve: UserReserve!
+#   borrowRateModeFrom: BorrowRateMode!
+#   borrowRateModeTo: BorrowRateMode!
+#   stableBorrowRate: BigInt!
+#   variableBorrowRate: BigInt!
+#   timestamp: Int!
+# }
 
-type FlashLoan @entity {
-  """
-  tx hash
-  """
-  id: ID!
-  pool: Pool!
-  reserve: Reserve!
-  target: Bytes!
-  amount: BigInt!
-  totalFee: BigInt!
-  #protocolFee: BigInt!
-  initiator: User!
-  timestamp: Int!
-}
+# type UsageAsCollateral implements UserTransaction @entity {
+#   """
+#   tx hash
+#   """
+#   id: ID!
+#   pool: Pool!
+#   user: User!
+#   reserve: Reserve!
+#   userReserve: UserReserve!
+#   fromState: Boolean!
+#   toState: Boolean!
+#   timestamp: Int!
+# }
 
-type LiquidationCall implements UserTransaction @entity {
-  """
-  tx hash
-  """
-  id: ID!
-  pool: Pool!
-  user: User!
-  collateralReserve: Reserve!
-  collateralUserReserve: UserReserve!
-  collateralAmount: BigInt!
-  principalReserve: Reserve!
-  principalUserReserve: UserReserve!
-  principalAmount: BigInt!
-  liquidator: Bytes!
-  timestamp: Int!
-}
+# type RebalanceStableBorrowRate implements UserTransaction @entity {
+#   """
+#   tx hash
+#   """
+#   id: ID!
+#   pool: Pool!
+#   user: User!
+#   reserve: Reserve!
+#   userReserve: UserReserve!
+#   borrowRateFrom: BigInt!
+#   borrowRateTo: BigInt!
+#   #accruedBorrowInterest: BigInt!
+#   timestamp: Int!
+# }
 
-type OriginationFeeLiquidation implements UserTransaction @entity {
-  """
-  tx hash
-  """
-  id: ID!
-  pool: Pool!
-  user: User!
-  collateralReserve: Reserve!
-  collateralUserReserve: UserReserve!
-  principalReserve: Reserve!
-  principalUserReserve: UserReserve!
-  feeLiquidated: BigInt!
-  liquidatedCollateralForFee: BigInt!
-  timestamp: Int!
-}
+# type Repay implements UserTransaction @entity {
+#   """
+#   tx hash
+#   """
+#   id: ID!
+#   pool: Pool!
+#   user: User!
+#   onBehalfOf: User!
+#   reserve: Reserve!
+#   userReserve: UserReserve!
+#   amount: BigInt!
+#   timestamp: Int!
+# }
+
+# type FlashLoan @entity {
+#   """
+#   tx hash
+#   """
+#   id: ID!
+#   pool: Pool!
+#   reserve: Reserve!
+#   target: Bytes!
+#   amount: BigInt!
+#   totalFee: BigInt!
+#   #protocolFee: BigInt!
+#   initiator: User!
+#   timestamp: Int!
+# }
+
+# type LiquidationCall implements UserTransaction @entity {
+#   """
+#   tx hash
+#   """
+#   id: ID!
+#   pool: Pool!
+#   user: User!
+#   collateralReserve: Reserve!
+#   collateralUserReserve: UserReserve!
+#   collateralAmount: BigInt!
+#   principalReserve: Reserve!
+#   principalUserReserve: UserReserve!
+#   principalAmount: BigInt!
+#   liquidator: Bytes!
+#   timestamp: Int!
+# }
+
+# type OriginationFeeLiquidation implements UserTransaction @entity {
+#   """
+#   tx hash
+#   """
+#   id: ID!
+#   pool: Pool!
+#   user: User!
+#   collateralReserve: Reserve!
+#   collateralUserReserve: UserReserve!
+#   principalReserve: Reserve!
+#   principalUserReserve: UserReserve!
+#   feeLiquidated: BigInt!
+#   liquidatedCollateralForFee: BigInt!
+#   timestamp: Int!
+# }
