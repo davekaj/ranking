@@ -40,7 +40,7 @@ type Account @entity {
 interface UserTransaction {
   id: ID!
   pool: Pool!
-  user: User!
+  user: Account!
   timestamp: Int!
 }
 

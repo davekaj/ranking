@@ -1,5 +1,5 @@
 // import { Address, Bytes, ethereum, log } from '@graphprotocol/graph-ts';
-import {   Protocol } from '../../../generated/schema';
+import { Protocol } from '../../../generated/schema';
 // import {
 //   PRICE_ORACLE_ASSET_PLATFORM_SIMPLE,
 //   PRICE_ORACLE_ASSET_TYPE_SIMPLE,
