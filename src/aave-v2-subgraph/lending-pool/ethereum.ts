@@ -2,8 +2,8 @@
 // // import { Swapped as SwappedLiquidity } from '../../../generated/UniswapLiquiditySwapAdapter/UniswapLiquiditySwapAdapter';
 // // import { SwapHistory } from '../../../generated/schema';
 // // import { EventTypeRef, getHistoryId } from '../../utils/id-generation';
-// export {
-//   handleDeposit,
+export {
+  handleDeposit,
 //   handleWithdraw,
 //   handleBorrow,
 //   handlePaused,
@@ -16,7 +16,7 @@
 //   handleReserveUsedAsCollateralEnabled,
 //   handleReserveUsedAsCollateralDisabled,
 //   handleReserveDataUpdated,
-// } from './lending-pool';
+} from './lending-pool';
 
 // // export function handleSwappedRepay(event: SwappedRepay): void {
 // //   let swap = new SwapHistory(getHistoryId(event, EventTypeRef.SwapAdapter));

@@ -10,7 +10,6 @@
     - It mixed setting Upgradable contracts, and EOAs for roles
     - **It creates one Pool, which is the main place where deposits and withdrawals happen**
     - See below for all addresses being set:
-  
 ```solidity
   bytes32 private constant LENDING_POOL = 'LENDING_POOL';
   bytes32 private constant LENDING_POOL_CONFIGURATOR = 'LENDING_POOL_CONFIGURATOR';
@@ -20,12 +19,34 @@
   bytes32 private constant PRICE_ORACLE = 'PRICE_ORACLE';
   bytes32 private constant LENDING_RATE_ORACLE = 'LENDING_RATE_ORACLE';
 ```
-
 - `lending-pool-address-provider.ts`
     - This is where the `LendingPoolContract.create()` happens. It happens on `handleProxyCreated()`
-
-
+    - This contract basically has the permission to create all relevant contracts. Pools and Pool Configurators (which are also smart contracts). It also stores the permissioned roles
+- `price-oracle.ts`
+    - stuff is just to have the live prices whenever they are changed. This is probably then combined in the front end to give an idea of prices.
+    - Also, prices are only used for borrows and liquidations, and things like that, in the protocol.
+    - **So, I don’t believe MY protocol will care at all about the price, for now. BECAUSE IT IS ABLE TO SEE ALL THE ACTIONS THE USER HAS MADE**
+        - The only thing I can think, is if you wanted live loans on the user. This would be like, investigating the mortgage status of a user, during the middle of the month. Maybe one day I can check it out, but for sure not needed right now!
+- `/lending-pool`
+  - The main contract for handling many events, `deposit, borrow, repay, etc.`. I will use this one a lot
+  - Note that a lot of these are the TRANSACTIONS stored as ENTITIES only. This is because, UserReserve and Reserve are updated in `/tokenization`
+- `/lending-pool-configurator`
+  - Initializes Reserves
+    - When a reserve is initalized, it also creates the AToken, SToken, and VToken contracts for that reserve, as a template, and thus will start tracking them
+  - Updates reserves
+  - Updates interest rate strategies
+  - Updates reserve status - paused, activated, borrowing disabled or enabled, any of the A,V,S tokens updated (through proxy upgrade)
+- `/proxy-price-provider`
+  - Everything here just has to do with Price. 
+- `/tokenization`
+  - `initialization.ts` - Just inits the A,V,S tokens. But when this happens, the incentives controllers also get created for these tokens.
+  - `tokenization.ts`
+    - Handles A,V,S token transfers, mints, burns
+    - Which subsequently updates UserReserve and Reserve status
+    - Also handles delegation of credit
+- `/incentives-controller`
+  - 
 
 # NOT SURE YET
-- it might be taht the Pool atually has the ID of the LendingPoolAddressesProvider. They share the same
+- it might be that the Pool actually has the ID of the LendingPoolAddressesProvider. They share the same
   - this is what it looks like in `handleAddressesProviderRegistered()`

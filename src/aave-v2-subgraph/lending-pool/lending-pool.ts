@@ -19,13 +19,13 @@
 //   Swap,
 //   ReserveDataUpdated,
 // } from '../../../generated/templates/LendingPool/LendingPool';
-// import {
-//   getOrInitReferrer,
-//   getOrInitReserve,
-//   getOrInitUser,
-//   getOrInitUserReserve,
-//   getPoolByContract,
-// } from '../helpers/initializers';
+import {
+  getOrInitReferrer,
+  getOrInitReserve,
+  getOrInitUser,
+  getOrInitUserReserve,
+  getPoolByContract,
+} from '../helpers/initializers';
 // import {
 //   Borrow as BorrowAction,
 //   Deposit as DepositAction,
@@ -41,30 +41,30 @@
 // import { EventTypeRef, getHistoryId } from '../../utils/id-generation';
 // import { calculateGrowth } from '../helpers/math';
 
-// export function handleDeposit(event: Deposit): void {
-//   let poolReserve = getOrInitReserve(event.params.reserve, event);
-//   let userReserve = getOrInitUserReserve(event.params.user, event.params.reserve, event);
-//   let depositedAmount = event.params.amount;
+export function handleDeposit(event: Deposit): void {
+  let poolReserve = getOrInitReserve(event.params.reserve, event);
+  let userReserve = getOrInitUserReserve(event.params.user, event.params.reserve, event);
+  let depositedAmount = event.params.amount;
 
-//   let id = getHistoryId(event, EventTypeRef.Deposit);
-//   if (DepositAction.load(id)) {
-//     id = id + '0';
-//   }
+  let id = getHistoryId(event, EventTypeRef.Deposit);
+  if (DepositAction.load(id)) {
+    id = id + '0';
+  }
 
-//   let deposit = new DepositAction(id);
-//   deposit.pool = poolReserve.pool;
-//   deposit.user = userReserve.user;
-//   deposit.onBehalfOf = event.params.onBehalfOf.toHexString();
-//   deposit.userReserve = userReserve.id;
-//   deposit.reserve = poolReserve.id;
-//   deposit.amount = depositedAmount;
-//   deposit.timestamp = event.block.timestamp.toI32();
-//   if (event.params.referral) {
-//     let referrer = getOrInitReferrer(event.params.referral);
-//     deposit.referrer = referrer.id;
-//   }
-//   deposit.save();
-// }
+  let deposit = new DepositAction(id);
+  deposit.pool = poolReserve.pool;
+  deposit.user = userReserve.user;
+  deposit.onBehalfOf = event.params.onBehalfOf.toHexString();
+  deposit.userReserve = userReserve.id;
+  deposit.reserve = poolReserve.id;
+  deposit.amount = depositedAmount;
+  deposit.timestamp = event.block.timestamp.toI32();
+  if (event.params.referral) {
+    let referrer = getOrInitReferrer(event.params.referral);
+    deposit.referrer = referrer.id;
+  }
+  deposit.save();
+}
 
 // export function handleWithdraw(event: Withdraw): void {
 //   let toUser = getOrInitUser(event.params.to);
@@ -289,28 +289,28 @@
 //   userReserve.save();
 // }
 
-// export function handleReserveDataUpdated(event: ReserveDataUpdated): void {
-//   let reserve = getOrInitReserve(event.params.reserve, event);
-//   reserve.stableBorrowRate = event.params.stableBorrowRate;
-//   reserve.variableBorrowRate = event.params.variableBorrowRate;
-//   reserve.variableBorrowIndex = event.params.variableBorrowIndex;
-//   let timestamp = event.block.timestamp;
-//   let prevTimestamp = BigInt.fromI32(reserve.lastUpdateTimestamp);
-//   if (timestamp.gt(prevTimestamp)) {
-//     let growth = calculateGrowth(
-//       reserve.totalATokenSupply,
-//       reserve.liquidityRate,
-//       prevTimestamp,
-//       timestamp
-//     );
-//     reserve.totalATokenSupply = reserve.totalATokenSupply.plus(growth);
-//     reserve.lifetimeDepositorsInterestEarned = reserve.lifetimeDepositorsInterestEarned.plus(
-//       growth
-//     );
-//   }
-//   reserve.liquidityRate = event.params.liquidityRate;
-//   reserve.liquidityIndex = event.params.liquidityIndex;
-//   reserve.lastUpdateTimestamp = event.block.timestamp.toI32();
+export function handleReserveDataUpdated(event: ReserveDataUpdated): void {
+  let reserve = getOrInitReserve(event.params.reserve, event);
+  reserve.stableBorrowRate = event.params.stableBorrowRate;
+  reserve.variableBorrowRate = event.params.variableBorrowRate;
+  reserve.variableBorrowIndex = event.params.variableBorrowIndex;
+  let timestamp = event.block.timestamp;
+  let prevTimestamp = BigInt.fromI32(reserve.lastUpdateTimestamp);
+  if (timestamp.gt(prevTimestamp)) {
+    let growth = calculateGrowth(
+      reserve.totalATokenSupply,
+      reserve.liquidityRate,
+      prevTimestamp,
+      timestamp
+    );
+    reserve.totalATokenSupply = reserve.totalATokenSupply.plus(growth);
+    reserve.lifetimeDepositorsInterestEarned = reserve.lifetimeDepositorsInterestEarned.plus(
+      growth
+    );
+  }
+  reserve.liquidityRate = event.params.liquidityRate;
+  reserve.liquidityIndex = event.params.liquidityIndex;
+  reserve.lastUpdateTimestamp = event.block.timestamp.toI32();
 
-//   reserve.save();
-// }
+  reserve.save();
+}
