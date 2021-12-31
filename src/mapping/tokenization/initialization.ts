@@ -56,7 +56,7 @@ function createIncentivesController(
     iController.save();
     AaveIncentivesControllerTemplate.create(incentivesController);
   }
-  let poolAddressProvider = ContractToPoolMapping.load(pool.toHexString());
+  let poolAddressProvider = ContractToPoolMapping.load(pool.toHexString())!;
   // save asset pool mapping
   let mapAssetPool = new MapAssetPool(asset.toHexString());
   mapAssetPool.pool = poolAddressProvider.pool;

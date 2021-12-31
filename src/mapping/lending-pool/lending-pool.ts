@@ -108,7 +108,7 @@ export function handleBorrow(event: Borrow): void {
 
 export function handlePaused(event: Paused): void {
   let poolId = getPoolByContract(event);
-  let lendingPool = Pool.load(poolId);
+  let lendingPool = Pool.load(poolId)!;
 
   lendingPool.paused = true;
   lendingPool.save();
@@ -116,7 +116,7 @@ export function handlePaused(event: Paused): void {
 
 export function handleUnpaused(event: Unpaused): void {
   let poolId = getPoolByContract(event);
-  let lendingPool = Pool.load(poolId);
+  let lendingPool = Pool.load(poolId)!;
 
   lendingPool.paused = false;
   lendingPool.save();

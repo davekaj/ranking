@@ -3,5 +3,5 @@
   "compilerOptions": {
     "types": ["@graphprotocol/graph-ts"]
   },
-  "include": ["src-old"]
+  "include": ["src-old", "src/bonuses.ts"]
 }

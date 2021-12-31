@@ -1,7 +1,7 @@
-import { Swapped as SwappedRepay } from '../../../generated/UniswapRepayAdapter/UniswapRepayAdapter';
-import { Swapped as SwappedLiquidity } from '../../../generated/UniswapLiquiditySwapAdapter/UniswapLiquiditySwapAdapter';
-import { SwapHistory } from '../../../generated/schema';
-import { EventTypeRef, getHistoryId } from '../../utils/id-generation';
+// import { Swapped as SwappedRepay } from '../../../generated/UniswapRepayAdapter/UniswapRepayAdapter';
+// import { Swapped as SwappedLiquidity } from '../../../generated/UniswapLiquiditySwapAdapter/UniswapLiquiditySwapAdapter';
+// import { SwapHistory } from '../../../generated/schema';
+// import { EventTypeRef, getHistoryId } from '../../utils/id-generation';
 export {
   handleDeposit,
   handleWithdraw,
@@ -18,26 +18,26 @@ export {
   handleReserveDataUpdated,
 } from './lending-pool';
 
-export function handleSwappedRepay(event: SwappedRepay): void {
-  let swap = new SwapHistory(getHistoryId(event, EventTypeRef.SwapAdapter));
+// export function handleSwappedRepay(event: SwappedRepay): void {
+//   let swap = new SwapHistory(getHistoryId(event, EventTypeRef.SwapAdapter));
 
-  swap.fromAsset = event.params.fromAsset.toHexString();
-  swap.toAsset = event.params.toAsset.toHexString();
-  swap.fromAmount = event.params.fromAmount;
-  swap.receivedAmount = event.params.receivedAmount;
-  swap.swapType = 'REPAY';
+//   swap.fromAsset = event.params.fromAsset.toHexString();
+//   swap.toAsset = event.params.toAsset.toHexString();
+//   swap.fromAmount = event.params.fromAmount;
+//   swap.receivedAmount = event.params.receivedAmount;
+//   swap.swapType = 'REPAY';
 
-  swap.save();
-}
+//   swap.save();
+// }
 
-export function handleSwappedLiquidity(event: SwappedLiquidity): void {
-  let swap = new SwapHistory(getHistoryId(event, EventTypeRef.SwapAdapter));
+// export function handleSwappedLiquidity(event: SwappedLiquidity): void {
+//   let swap = new SwapHistory(getHistoryId(event, EventTypeRef.SwapAdapter));
 
-  swap.fromAsset = event.params.fromAsset.toHexString();
-  swap.toAsset = event.params.toAsset.toHexString();
-  swap.fromAmount = event.params.fromAmount;
-  swap.receivedAmount = event.params.receivedAmount;
-  swap.swapType = 'LIQUIDITY';
+//   swap.fromAsset = event.params.fromAsset.toHexString();
+//   swap.toAsset = event.params.toAsset.toHexString();
+//   swap.fromAmount = event.params.fromAmount;
+//   swap.receivedAmount = event.params.receivedAmount;
+//   swap.swapType = 'LIQUIDITY';
 
-  swap.save();
-}
+//   swap.save();
+// }
