@@ -13,11 +13,11 @@ import {
 } from '../../generated/templates/LendingPoolAddressesProvider/LendingPoolAddressesProvider';
 import {
   LendingPool as LendingPoolContract,
-  //LendingPoolConfigurator as LendingPoolConfiguratorContract,
+  LendingPoolConfigurator as LendingPoolConfiguratorContract,
 } from '../../generated/templates';
-// import { createMapContractToPool, getOrInitPriceOracle } from '../helpers/initializers';
-import { Pool } from '../../generated/schema';
-// import { EventTypeRef, getHistoryId } from '../utils/id-generation';
+import { createMapContractToPool, getOrInitPriceOracle } from '../helpers/initializers';
+import { Pool, PoolConfigurationHistoryItem } from '../../generated/schema';
+import { EventTypeRef, getHistoryId } from '../utils/id-generation';
 
 let POOL_COMPONENTS = [
   'lendingPoolConfigurator',
@@ -36,20 +36,20 @@ function saveAddressProvider(lendingPool: Pool, timestamp: BigInt, event: ethere
   lendingPool.lastUpdateTimestamp = timestamp.toI32();
   lendingPool.save();
 
-  // let configurationHistoryItem = new PoolConfigurationHistoryItem(
-  //   getHistoryId(event, EventTypeRef.NoType)
-  // );
-  // for (let i = 0; i < POOL_COMPONENTS.length; i++) {
-  //   let param = POOL_COMPONENTS[i];
-  //   let value = lendingPool.get(param);
-  //   if (!value) {
-  //     return;
-  //   }
-  //   configurationHistoryItem.set(param, value as Value);
-  // }
-  // configurationHistoryItem.timestamp = timestamp.toI32();
-  // configurationHistoryItem.pool = lendingPool.id;
-  // configurationHistoryItem.save();
+  let configurationHistoryItem = new PoolConfigurationHistoryItem(
+    getHistoryId(event, EventTypeRef.NoType)
+  );
+  for (let i = 0; i < POOL_COMPONENTS.length; i++) {
+    let param = POOL_COMPONENTS[i];
+    let value = lendingPool.get(param);
+    if (!value) {
+      return;
+    }
+    configurationHistoryItem.set(param, value as Value);
+  }
+  configurationHistoryItem.timestamp = timestamp.toI32();
+  configurationHistoryItem.pool = lendingPool.id;
+  configurationHistoryItem.save();
 }
 
 function genericAddressProviderUpdate(
@@ -69,9 +69,9 @@ function genericAddressProviderUpdate(
   }
 
   lendingPool.set(component, Value.fromAddress(newAddress));
-  // if (createMapContract) {
-  //   createMapContractToPool(newAddress, lendingPool.id);
-  // }
+  if (createMapContract) {
+    createMapContractToPool(newAddress, lendingPool.id);
+  }
   saveAddressProvider(lendingPool as Pool, event.block.timestamp, event);
 }
 
@@ -80,11 +80,10 @@ export function handleProxyCreated(event: ProxyCreated): void {
   let contactId = event.params.id.toString();
   let poolComponent: string;
 
-  // if (contactId == 'LENDING_POOL_CONFIGURATOR') { // DK - NOT IN USE ATM
-  //   poolComponent = 'lendingPoolConfigurator';
-  //   LendingPoolConfiguratorContract.create(newProxyAddress);
-  // } else 
-  if (contactId == 'LENDING_POOL') {
+  if (contactId == 'LENDING_POOL_CONFIGURATOR') {
+    poolComponent = 'lendingPoolConfigurator';
+    LendingPoolConfiguratorContract.create(newProxyAddress);
+  } else if (contactId == 'LENDING_POOL') {
     poolComponent = 'lendingPool';
     LendingPoolContract.create(newProxyAddress);
   } else {
@@ -127,10 +126,10 @@ export function handlePriceOracleUpdated(event: PriceOracleUpdated): void {
   genericAddressProviderUpdate('proxyPriceProvider', event.params.newAddress, event, false);
 
   // TODO: should be more general
-  // let priceOracle = getOrInitPriceOracle();
-  // //if (priceOracle.proxyPriceProvider.equals(zeroAddress())) {
-  // priceOracle.proxyPriceProvider = event.params.newAddress;
-  // priceOracle.save();
+  let priceOracle = getOrInitPriceOracle();
+  //if (priceOracle.proxyPriceProvider.equals(zeroAddress())) {
+  priceOracle.proxyPriceProvider = event.params.newAddress;
+  priceOracle.save();
   //}
 }
 

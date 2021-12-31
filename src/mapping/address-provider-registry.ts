@@ -5,7 +5,7 @@ import {
   AddressesProviderRegistered,
   AddressesProviderUnregistered,
 } from '../../generated/LendingPoolAddressesProviderRegistry/LendingPoolAddressesProviderRegistry';
-import { getProtocol } from './helpers/initializers';
+import { getProtocol } from '../helpers/initializers';
 
 export function handleAddressesProviderRegistered(event: AddressesProviderRegistered): void {
   let protocol = getProtocol();
@@ -23,7 +23,7 @@ export function handleAddressesProviderRegistered(event: AddressesProviderRegist
 }
 
 export function handleAddressesProviderUnregistered(event: AddressesProviderUnregistered): void {
-  let pool = Pool.load(event.params.newAddress.toHexString())!;
+  let pool = Pool.load(event.params.newAddress.toHexString());
   pool.active = false;
   pool.save();
 }
