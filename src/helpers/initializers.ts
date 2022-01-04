@@ -3,18 +3,18 @@ import {
   AToken,
   SToken,
   VToken,
-  PriceOracle,
-  PriceOracleAsset,
+  // PriceOracle,
+  // PriceOracleAsset,
   Reserve,
   User,
   UserReserve,
   ReserveParamsHistoryItem,
   ReserveConfigurationHistoryItem,
   Referrer,
-  ChainlinkAggregator,
+  // ChainlinkAggregator,
   ContractToPoolMapping,
   Protocol,
-  ChainlinkENS,
+  // ChainlinkENS,
 } from '../../generated/schema';
 import {
   PRICE_ORACLE_ASSET_PLATFORM_SIMPLE,
@@ -57,17 +57,17 @@ export function getOrInitUser(address: Address): User {
   return user as User;
 }
 
-export function getOrInitENS(node: string): ChainlinkENS {
-  let ens = ChainlinkENS.load(node);
-  if (!ens) {
-    ens = new ChainlinkENS(node);
-    ens.aggregatorAddress = zeroAddress();
-    ens.underlyingAddress = zeroAddress();
-    ens.symbol = '';
-    ens.save();
-  }
-  return ens as ChainlinkENS;
-}
+// export function getOrInitENS(node: string): ChainlinkENS {
+//   let ens = ChainlinkENS.load(node);
+//   if (!ens) {
+//     ens = new ChainlinkENS(node);
+//     ens.aggregatorAddress = zeroAddress();
+//     ens.underlyingAddress = zeroAddress();
+//     ens.symbol = '';
+//     ens.save();
+//   }
+//   return ens as ChainlinkENS;
+// }
 
 function initUserReserve(
   underlyingAssetAddress: Address,
@@ -130,41 +130,41 @@ export function getOrInitUserReserve(
   return initUserReserve(_underlyingAsset, _user, poolId, reserve.id);
 }
 
-export function getOrInitPriceOracle(): PriceOracle {
-  let priceOracle = PriceOracle.load('1');
-  if (!priceOracle) {
-    priceOracle = new PriceOracle('1');
-    priceOracle.proxyPriceProvider = zeroAddress();
-    priceOracle.usdPriceEth = zeroBI();
-    priceOracle.usdPriceEthMainSource = zeroAddress();
-    priceOracle.usdPriceEthFallbackRequired = false;
-    priceOracle.fallbackPriceOracle = zeroAddress();
-    priceOracle.tokensWithFallback = [];
-    priceOracle.lastUpdateTimestamp = 0;
-    priceOracle.usdDependentAssets = [];
-    priceOracle.version = 1;
-    priceOracle.save();
-  }
-  return priceOracle as PriceOracle;
-}
+// export function getOrInitPriceOracle(): PriceOracle {
+//   let priceOracle = PriceOracle.load('1');
+//   if (!priceOracle) {
+//     priceOracle = new PriceOracle('1');
+//     priceOracle.proxyPriceProvider = zeroAddress();
+//     priceOracle.usdPriceEth = zeroBI();
+//     priceOracle.usdPriceEthMainSource = zeroAddress();
+//     priceOracle.usdPriceEthFallbackRequired = false;
+//     priceOracle.fallbackPriceOracle = zeroAddress();
+//     priceOracle.tokensWithFallback = [];
+//     priceOracle.lastUpdateTimestamp = 0;
+//     priceOracle.usdDependentAssets = [];
+//     priceOracle.version = 1;
+//     priceOracle.save();
+//   }
+//   return priceOracle as PriceOracle;
+// }
 
-export function getPriceOracleAsset(id: string, save: boolean = true): PriceOracleAsset {
-  let priceOracleReserve = PriceOracleAsset.load(id);
-  if (!priceOracleReserve && save) {
-    priceOracleReserve = new PriceOracleAsset(id);
-    priceOracleReserve.oracle = getOrInitPriceOracle().id;
-    priceOracleReserve.priceSource = zeroAddress();
-    priceOracleReserve.dependentAssets = [];
-    priceOracleReserve.type = PRICE_ORACLE_ASSET_TYPE_SIMPLE;
-    priceOracleReserve.platform = PRICE_ORACLE_ASSET_PLATFORM_SIMPLE;
-    priceOracleReserve.priceInEth = zeroBI();
-    priceOracleReserve.isFallbackRequired = false;
-    priceOracleReserve.lastUpdateTimestamp = 0;
-    priceOracleReserve.fromChainlinkSourcesRegistry = false;
-    priceOracleReserve.save();
-  }
-  return priceOracleReserve as PriceOracleAsset;
-}
+// export function getPriceOracleAsset(id: string, save: boolean = true): PriceOracleAsset {
+//   let priceOracleReserve = PriceOracleAsset.load(id);
+//   if (!priceOracleReserve && save) {
+//     priceOracleReserve = new PriceOracleAsset(id);
+//     priceOracleReserve.oracle = getOrInitPriceOracle().id;
+//     priceOracleReserve.priceSource = zeroAddress();
+//     priceOracleReserve.dependentAssets = [];
+//     priceOracleReserve.type = PRICE_ORACLE_ASSET_TYPE_SIMPLE;
+//     priceOracleReserve.platform = PRICE_ORACLE_ASSET_PLATFORM_SIMPLE;
+//     priceOracleReserve.priceInEth = zeroBI();
+//     priceOracleReserve.isFallbackRequired = false;
+//     priceOracleReserve.lastUpdateTimestamp = 0;
+//     priceOracleReserve.fromChainlinkSourcesRegistry = false;
+//     priceOracleReserve.save();
+//   }
+//   return priceOracleReserve as PriceOracleAsset;
+// }
 
 export function getOrInitReserve(underlyingAsset: Address, event: ethereum.Event): Reserve {
   let poolId = getPoolByContract(event);
@@ -245,24 +245,24 @@ export function getOrInitReserve(underlyingAsset: Address, event: ethereum.Event
     // reserve.lifetimeStableDebFeeCollected = zeroBI();
     // reserve.lifetimeVariableDebtFeeCollected = zeroBI();
 
-    let priceOracleAsset = getPriceOracleAsset(underlyingAsset.toHexString());
-    if (!priceOracleAsset.lastUpdateTimestamp) {
-      priceOracleAsset.save();
-    }
-    reserve.price = priceOracleAsset.id;
+    // let priceOracleAsset = getPriceOracleAsset(underlyingAsset.toHexString());
+    // if (!priceOracleAsset.lastUpdateTimestamp) {
+    //   priceOracleAsset.save();
+    // }
+    // reserve.price = priceOracleAsset.id;
     // TODO: think about AToken
   }
   return reserve as Reserve;
 }
 
-export function getChainlinkAggregator(id: string): ChainlinkAggregator {
-  let chainlinkAggregator = ChainlinkAggregator.load(id);
-  if (!chainlinkAggregator) {
-    chainlinkAggregator = new ChainlinkAggregator(id);
-    chainlinkAggregator.oracleAsset = '';
-  }
-  return chainlinkAggregator as ChainlinkAggregator;
-}
+// export function getChainlinkAggregator(id: string): ChainlinkAggregator {
+//   let chainlinkAggregator = ChainlinkAggregator.load(id);
+//   if (!chainlinkAggregator) {
+//     chainlinkAggregator = new ChainlinkAggregator(id);
+//     chainlinkAggregator.oracleAsset = '';
+//   }
+//   return chainlinkAggregator as ChainlinkAggregator;
+// }
 
 export function getOrInitSToken(sTokenAddress: Address): SToken {
   let sTokenId = getAtokenId(sTokenAddress);

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-inferrable-types */
-import { Bytes, Address, ethereum } from '@graphprotocol/graph-ts';
+import { Bytes, Address, ethereum,log } from '@graphprotocol/graph-ts';
 
 import {
   BorrowingDisabledOnReserve,
@@ -51,7 +51,11 @@ export function updateInterestRateStrategy(
   strategy: Bytes,
   init: boolean = false
 ): void {
-  let interestRateStrategyContract = DefaultReserveInterestRateStrategy.bind(strategy as Address);
+  log.warning("Reserve:  {}", [reserve.id])
+  log.warning("strat:  {}", [strategy.toHexString()])
+  log.warning("init:  {}", [init? "true": "false"])
+
+  let interestRateStrategyContract = DefaultReserveInterestRateStrategy.bind(changetype<Address>(strategy));
 
   reserve.reserveInterestRateStrategy = strategy;
   reserve.baseVariableBorrowRate = interestRateStrategyContract.baseVariableBorrowRate();

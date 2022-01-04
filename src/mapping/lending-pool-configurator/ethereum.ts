@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-inferrable-types */
+import { log } from '@graphprotocol/graph-ts';
 import { ReserveInitialized } from '../../../generated/templates/LendingPoolConfigurator/LendingPoolConfigurator';
 import { IERC20Detailed } from '../../../generated/templates/LendingPoolConfigurator/IERC20Detailed';
 import { IERC20DetailedBytes } from '../../../generated/templates/LendingPoolConfigurator/IERC20DetailedBytes';
@@ -56,7 +57,10 @@ export function handleReserveInitialized(event: ReserveInitialized): void {
   reserve.symbol = ERC20ATokenContract.symbol().slice(1);
 
   reserve.decimals = ERC20ReserveContract.decimals();
-
+  
+  log.warning("Reserve1: {}", [reserve.id])
+  log.warning("strat1:  {}", [event.params.interestRateStrategyAddress.toHexString()])
+  log.warning("init1:  {}", [true? "true": "false"])
   updateInterestRateStrategy(reserve, event.params.interestRateStrategyAddress, true);
 
   ATokenContract.create(event.params.aToken);

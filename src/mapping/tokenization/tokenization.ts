@@ -29,8 +29,8 @@ import {
   getOrInitSToken,
   getOrInitVToken,
   getOrInitUser,
-  getPriceOracleAsset,
-  getOrInitPriceOracle,
+  // getPriceOracleAsset,
+  // getOrInitPriceOracle,
   getOrInitReserveParamsHistoryItem,
 } from '../../helpers/initializers';
 import { zeroBI } from '../../utils/converters';
@@ -122,13 +122,13 @@ function saveReserve(reserve: Reserve, event: ethereum.Event): void {
   reserveParamsHistoryItem.liquidityRate = reserve.liquidityRate;
   reserveParamsHistoryItem.totalATokenSupply = reserve.totalATokenSupply;
   reserveParamsHistoryItem.averageStableBorrowRate = reserve.averageStableRate;
-  let priceOracleAsset = getPriceOracleAsset(reserve.price);
-  reserveParamsHistoryItem.priceInEth = priceOracleAsset.priceInEth;
+  // let priceOracleAsset = getPriceOracleAsset(reserve.price);
+  // reserveParamsHistoryItem.priceInEth = priceOracleAsset.priceInEth;
 
-  let priceOracle = getOrInitPriceOracle();
-  reserveParamsHistoryItem.priceInUsd = reserveParamsHistoryItem.priceInEth
-    .toBigDecimal()
-    .div(priceOracle.usdPriceEth.toBigDecimal());
+  // let priceOracle = getOrInitPriceOracle();
+  // reserveParamsHistoryItem.priceInUsd = reserveParamsHistoryItem.priceInEth
+  //   .toBigDecimal()
+  //   .div(priceOracle.usdPriceEth.toBigDecimal());
 
   reserveParamsHistoryItem.timestamp = event.block.timestamp.toI32();
   reserveParamsHistoryItem.save();
@@ -136,8 +136,8 @@ function saveReserve(reserve: Reserve, event: ethereum.Event): void {
 
 function tokenBurn(event: ethereum.Event, from: Address, value: BigInt, index: BigInt): void {
   let aToken = getOrInitAToken(event.address);
-  let userReserve = getOrInitUserReserve(from, aToken.underlyingAssetAddress as Address, event);
-  let poolReserve = getOrInitReserve(aToken.underlyingAssetAddress as Address, event);
+  let userReserve = getOrInitUserReserve(from, changetype<Address>(aToken.underlyingAssetAddress), event);
+  let poolReserve = getOrInitReserve(changetype<Address>(aToken.underlyingAssetAddress), event);
 
   let calculatedAmount = rayDiv(value, index);
 
@@ -170,14 +170,14 @@ function tokenBurn(event: ethereum.Event, from: Address, value: BigInt, index: B
 
 function tokenMint(event: ethereum.Event, from: Address, value: BigInt, index: BigInt): void {
   let aToken = getOrInitAToken(event.address);
-  let poolReserve = getOrInitReserve(aToken.underlyingAssetAddress as Address, event);
+  let poolReserve = getOrInitReserve(changetype<Address>(aToken.underlyingAssetAddress), event);
   poolReserve.totalATokenSupply = poolReserve.totalATokenSupply.plus(value);
   // Check if we are minting to treasury for mainnet and polygon
   if (
     from.toHexString() != '0x464c71f6c2f760dda6093dcb91c24c39e5d6e18c' &&
     from.toHexString() != '0x7734280a4337f37fbf4651073db7c28c80b339e9'
   ) {
-    let userReserve = getOrInitUserReserve(from, aToken.underlyingAssetAddress as Address, event);
+    let userReserve = getOrInitUserReserve(from, changetype<Address>(aToken.underlyingAssetAddress), event);
     let calculatedAmount = rayDiv(value, index);
 
     userReserve.scaledATokenBalance = userReserve.scaledATokenBalance.plus(calculatedAmount);
@@ -227,16 +227,16 @@ export function handleATokenTransfer(event: ATokenTransfer): void {
   let aToken = getOrInitAToken(event.address);
   let userFromReserve = getOrInitUserReserve(
     event.params.from,
-    aToken.underlyingAssetAddress as Address,
+    changetype<Address>(aToken.underlyingAssetAddress),
     event
   );
   let userToReserve = getOrInitUserReserve(
     event.params.to,
-    aToken.underlyingAssetAddress as Address,
+    changetype<Address>(aToken.underlyingAssetAddress),
     event
   );
 
-  let reserve = getOrInitReserve(aToken.underlyingAssetAddress as Address, event);
+  let reserve = getOrInitReserve(changetype<Address>(aToken.underlyingAssetAddress), event);
   if (
     userFromReserve.usageAsCollateralEnabledOnUser &&
     !userToReserve.usageAsCollateralEnabledOnUser
@@ -261,8 +261,8 @@ export function handleVariableTokenBurn(event: VTokenBurn): void {
   let from = event.params.user;
   let value = event.params.amount;
   let index = event.params.index;
-  let userReserve = getOrInitUserReserve(from, vToken.underlyingAssetAddress as Address, event);
-  let poolReserve = getOrInitReserve(vToken.underlyingAssetAddress as Address, event);
+  let userReserve = getOrInitUserReserve(from, changetype<Address>(vToken.underlyingAssetAddress), event);
+  let poolReserve = getOrInitReserve(changetype<Address>(vToken.underlyingAssetAddress), event);
 
   let calculatedAmount = rayDiv(value, index);
   userReserve.scaledVariableDebt = userReserve.scaledVariableDebt.minus(calculatedAmount);
@@ -301,7 +301,7 @@ export function handleVariableTokenBurn(event: VTokenBurn): void {
 
 export function handleVariableTokenMint(event: VTokenMint): void {
   let vToken = getOrInitVToken(event.address);
-  let poolReserve = getOrInitReserve(vToken.underlyingAssetAddress as Address, event);
+  let poolReserve = getOrInitReserve(changetype<Address>(vToken.underlyingAssetAddress), event);
 
   let from = event.params.from;
   if (from.toHexString() != event.params.onBehalfOf.toHexString()) {
@@ -311,7 +311,7 @@ export function handleVariableTokenMint(event: VTokenMint): void {
   let value = event.params.value;
   let index = event.params.index;
 
-  let userReserve = getOrInitUserReserve(from, vToken.underlyingAssetAddress as Address, event);
+  let userReserve = getOrInitUserReserve(from, changetype<Address>(vToken.underlyingAssetAddress), event);
 
   let user = getOrInitUser(event.params.from);
   if (
@@ -358,9 +358,9 @@ export function handleStableTokenMint(event: STokenMint): void {
   if (from.toHexString() != event.params.onBehalfOf.toHexString()) {
     from = event.params.onBehalfOf;
   }
-  let userReserve = getOrInitUserReserve(from, sToken.underlyingAssetAddress as Address, event);
+  let userReserve = getOrInitUserReserve(from, changetype<Address>(sToken.underlyingAssetAddress), event);
 
-  let poolReserve = getOrInitReserve(sToken.underlyingAssetAddress as Address, event);
+  let poolReserve = getOrInitReserve(changetype<Address>(sToken.underlyingAssetAddress), event);
 
   let user = getOrInitUser(from);
   if (
@@ -410,10 +410,10 @@ export function handleStableTokenBurn(event: STokenBurn): void {
   let sToken = getOrInitSToken(sTokenAddress);
   let userReserve = getOrInitUserReserve(
     event.params.user,
-    sToken.underlyingAssetAddress as Address,
+    changetype<Address>(sToken.underlyingAssetAddress),
     event
   );
-  let poolReserve = getOrInitReserve(sToken.underlyingAssetAddress as Address, event);
+  let poolReserve = getOrInitReserve(changetype<Address>(sToken.underlyingAssetAddress), event);
   let balanceIncrease = event.params.balanceIncrease;
   let amount = event.params.amount;
 
