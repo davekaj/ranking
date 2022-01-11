@@ -463,19 +463,6 @@ type Reserve @entity {
   deposits: [Deposit!]! @derivedFrom(field: "reserve")
 }
 
-type WETHReserve @entity {
-  """
-  weth address
-  """
-  id: ID!
-  address: Bytes!
-  symbol: String!
-  name: String!
-  decimals: Int!
-  updatedTimestamp: Int!
-  updatedBlockNumber: BigInt!
-}
-
 type ATokenBalanceHistoryItem @entity {
   """
   userReserve + txHash
