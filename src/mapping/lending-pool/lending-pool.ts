@@ -118,28 +118,6 @@ export function handleUnpaused(event: Unpaused): void {
   lendingPool.save()
 }
 
-export function handleSwap(event: Swap): void {
-  let userReserve = getOrInitUserReserve(event.params.user, event.params.reserve, event)
-  let poolReserve = getOrInitReserve(event.params.reserve, event)
-
-  let swapHistoryItem = new SwapAction(getHistoryId(event, EventTypeRef.Swap))
-  swapHistoryItem.pool = poolReserve.pool
-  swapHistoryItem.borrowRateModeFrom = getBorrowRateMode(event.params.rateMode)
-  if (swapHistoryItem.borrowRateModeFrom === BORROW_MODE_STABLE) {
-    swapHistoryItem.borrowRateModeTo = BORROW_MODE_VARIABLE
-  } else {
-    swapHistoryItem.borrowRateModeTo = BORROW_MODE_STABLE
-  }
-
-  swapHistoryItem.variableBorrowRate = poolReserve.variableBorrowRate
-  swapHistoryItem.stableBorrowRate = poolReserve.stableBorrowRate
-  swapHistoryItem.user = userReserve.user
-  swapHistoryItem.userReserve = userReserve.id
-  swapHistoryItem.reserve = poolReserve.id
-  swapHistoryItem.timestamp = event.block.timestamp.toI32()
-  swapHistoryItem.save()
-}
-
 export function handleRebalanceStableBorrowRate(event: RebalanceStableBorrowRate): void {
   let userReserve = getOrInitUserReserve(event.params.user, event.params.reserve, event)
   let poolReserve = getOrInitReserve(event.params.reserve, event)
