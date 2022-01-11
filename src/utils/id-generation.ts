@@ -1,5 +1,5 @@
-import { ethereum } from '@graphprotocol/graph-ts';
-import { Address } from '@graphprotocol/graph-ts/index';
+import { ethereum } from '@graphprotocol/graph-ts'
+import { Address } from '@graphprotocol/graph-ts/index'
 
 export enum EventTypeRef {
   NoType,
@@ -16,30 +16,30 @@ export enum EventTypeRef {
   SwapAdapter,
 }
 
-export function getHistoryId( 
+export function getHistoryId(
   event: ethereum.Event,
-  type: EventTypeRef = EventTypeRef.NoType
+  type: EventTypeRef = EventTypeRef.NoType,
 ): string {
-  let postfix = type !== EventTypeRef.NoType ? ':' + type.toString() : '';
-  return event.transaction.hash.toHexString() + postfix;
+  let postfix = type !== EventTypeRef.NoType ? ':' + type.toString() : ''
+  return event.transaction.hash.toHexString() + postfix
 }
 
 export function getHistoryEntityId(event: ethereum.Event): string {
-  return event.transaction.hash.toHexString() + ':' + event.logIndex.toString();
+  return event.transaction.hash.toHexString() + ':' + event.logIndex.toString()
 }
 
 export function getReserveId(underlyingAsset: Address, poolId: string): string {
-  return underlyingAsset.toHexString() + poolId;
+  return underlyingAsset.toHexString() + poolId
 }
 
 export function getUserReserveId(
   userAddress: Address,
   underlyingAssetAddress: Address,
-  poolId: string
+  poolId: string,
 ): string {
-  return userAddress.toHexString() + underlyingAssetAddress.toHexString() + poolId;
+  return userAddress.toHexString() + underlyingAssetAddress.toHexString() + poolId
 }
 
 export function getAtokenId(aTokenAddress: Address): string {
-  return aTokenAddress.toHexString();
+  return aTokenAddress.toHexString()
 }

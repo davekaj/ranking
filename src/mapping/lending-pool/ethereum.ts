@@ -16,7 +16,7 @@ export {
   handleReserveUsedAsCollateralEnabled,
   handleReserveUsedAsCollateralDisabled,
   handleReserveDataUpdated,
-} from './lending-pool';
+} from './lending-pool'
 
 // export function handleSwappedRepay(event: SwappedRepay): void {
 //   let swap = new SwapHistory(getHistoryId(event, EventTypeRef.SwapAdapter));

@@ -53,7 +53,7 @@
 //     let aggregatorAddress = aggregatorAddressCall.value;
 //     priceOracleAsset.priceSource = aggregatorAddress;
 //     // create ChainLink aggregator template entity
-//     ChainlinkAggregatorContract.create(aggregatorAddress); 
+//     ChainlinkAggregatorContract.create(aggregatorAddress);
 
 //     // Register the aggregator address to the ens registry
 //     let symbol = '';

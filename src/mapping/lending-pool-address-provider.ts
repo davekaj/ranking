@@ -1,4 +1,4 @@
-import { BigInt, ethereum, Value, Address, log } from '@graphprotocol/graph-ts';
+import { BigInt, ethereum, Value, Address, log } from '@graphprotocol/graph-ts'
 
 import {
   LendingPoolUpdated,
@@ -10,13 +10,13 @@ import {
   PriceOracleUpdated,
   ProxyCreated,
   EmergencyAdminUpdated,
-} from '../../generated/templates/LendingPoolAddressesProvider/LendingPoolAddressesProvider';
+} from '../../generated/templates/LendingPoolAddressesProvider/LendingPoolAddressesProvider'
 import {
   LendingPool as LendingPoolContract,
   LendingPoolConfigurator as LendingPoolConfiguratorContract,
-} from '../../generated/templates';
-import { createMapContractToPool } from '../helpers/initializers'; // getOrInitPriceOracle commented out - dk
-import { Pool } from '../../generated/schema';
+} from '../../generated/templates'
+import { createMapContractToPool } from '../helpers/initializers' // getOrInitPriceOracle commented out - dk
+import { Pool } from '../../generated/schema'
 
 let POOL_COMPONENTS = [
   'lendingPoolConfigurator',
@@ -29,80 +29,80 @@ let POOL_COMPONENTS = [
   'lendingPoolCollateralManager',
   'emergencyAdmin',
   'ethereumAddress',
-] as string[];
+] as string[]
 
 function saveAddressProvider(lendingPool: Pool, timestamp: BigInt, event: ethereum.Event): void {
-  lendingPool.lastUpdateTimestamp = timestamp.toI32();
-  lendingPool.save();
+  lendingPool.lastUpdateTimestamp = timestamp.toI32()
+  lendingPool.save()
 }
 
 function genericAddressProviderUpdate(
   component: string,
   newAddress: Address,
   event: ethereum.Event,
-  createMapContract: boolean = true
+  createMapContract: boolean = true,
 ): void {
   if (!POOL_COMPONENTS.includes(component)) {
-    throw new Error('wrong pool component name' + component);
+    throw new Error('wrong pool component name' + component)
   }
-  let poolAddress = event.address.toHexString();
-  let lendingPool = Pool.load(poolAddress);
+  let poolAddress = event.address.toHexString()
+  let lendingPool = Pool.load(poolAddress)
   if (lendingPool == null) {
-    log.error('pool {} is not registered!', [poolAddress]);
-    throw new Error('pool' + poolAddress + 'is not registered!');
+    log.error('pool {} is not registered!', [poolAddress])
+    throw new Error('pool' + poolAddress + 'is not registered!')
   }
 
-  lendingPool.set(component, Value.fromAddress(newAddress));
+  lendingPool.set(component, Value.fromAddress(newAddress))
   if (createMapContract) {
-    createMapContractToPool(newAddress, lendingPool.id);
+    createMapContractToPool(newAddress, lendingPool.id)
   }
-  saveAddressProvider(lendingPool as Pool, event.block.timestamp, event);
+  saveAddressProvider(lendingPool as Pool, event.block.timestamp, event)
 }
 
 export function handleProxyCreated(event: ProxyCreated): void {
-  let newProxyAddress = event.params.newAddress;
-  let contactId = event.params.id.toString();
-  let poolComponent: string;
+  let newProxyAddress = event.params.newAddress
+  let contactId = event.params.id.toString()
+  let poolComponent: string
 
   if (contactId == 'LENDING_POOL_CONFIGURATOR') {
-    poolComponent = 'lendingPoolConfigurator';
-    LendingPoolConfiguratorContract.create(newProxyAddress);
+    poolComponent = 'lendingPoolConfigurator'
+    LendingPoolConfiguratorContract.create(newProxyAddress)
   } else if (contactId == 'LENDING_POOL') {
-    poolComponent = 'lendingPool';
-    LendingPoolContract.create(newProxyAddress);
+    poolComponent = 'lendingPool'
+    LendingPoolContract.create(newProxyAddress)
   } else {
-    return;
+    return
   }
 
-  genericAddressProviderUpdate(poolComponent, newProxyAddress, event);
+  genericAddressProviderUpdate(poolComponent, newProxyAddress, event)
 }
 
 // TODO: not completely sure that this should work, as id passed through event can not mach, and proxy? or impl?
 export function handleAddressSet(event: AddressSet): void {
-  let mappedId = '';
+  let mappedId = ''
   if (event.params.id.toString() == 'LENDING_POOL') {
-    mappedId = 'lendingPool';
+    mappedId = 'lendingPool'
   } else if (event.params.id.toString() == 'LENDING_POOL_CONFIGURATOR') {
-    mappedId = 'lendingPoolConfigurator';
+    mappedId = 'lendingPoolConfigurator'
   } else if (event.params.id.toString() == 'POOL_ADMIN') {
-    mappedId = 'configurationAdmin'; // is this the correct id?
+    mappedId = 'configurationAdmin' // is this the correct id?
   } else if (event.params.id.toString() == 'EMERGENCY_ADMIN') {
-    mappedId = 'emergencyAdmin';
+    mappedId = 'emergencyAdmin'
   } else if (event.params.id.toString() == 'COLLATERAL_MANAGER') {
-    mappedId = 'lendingPoolCollateralManager';
+    mappedId = 'lendingPoolCollateralManager'
   } else if (event.params.id.toString() == 'PRICE_ORACLE') {
-    mappedId = 'proxyPriceProvider';
+    mappedId = 'proxyPriceProvider'
   } else if (event.params.id.toString() == 'LENDING_RATE_ORACLE') {
-    mappedId = 'lendingRateOracle';
+    mappedId = 'lendingRateOracle'
   }
 
   if (mappedId != '') {
-    genericAddressProviderUpdate(mappedId, event.params.newAddress, event, false);
+    genericAddressProviderUpdate(mappedId, event.params.newAddress, event, false)
   } else {
     log.error('Address set: {} | Contract ID: {}', [
       event.params.newAddress.toHexString(),
       event.params.id.toString(),
-    ]);
+    ])
   }
 }
 
@@ -118,37 +118,32 @@ export function handleAddressSet(event: AddressSet): void {
 // }
 
 export function handleLendingRateOracleUpdated(event: LendingRateOracleUpdated): void {
-  genericAddressProviderUpdate('lendingRateOracle', event.params.newAddress, event, false);
+  genericAddressProviderUpdate('lendingRateOracle', event.params.newAddress, event, false)
 }
 
 export function handleLendingPoolUpdated(event: LendingPoolUpdated): void {
-  genericAddressProviderUpdate('lendingPoolImpl', event.params.newAddress, event, false);
+  genericAddressProviderUpdate('lendingPoolImpl', event.params.newAddress, event, false)
 }
 
 export function handleConfigurationAdminUpdated(event: ConfigurationAdminUpdated): void {
-  genericAddressProviderUpdate('configurationAdmin', event.params.newAddress, event, false);
+  genericAddressProviderUpdate('configurationAdmin', event.params.newAddress, event, false)
 }
 
 export function handleLendingPoolConfiguratorUpdated(event: LendingPoolConfiguratorUpdated): void {
-  genericAddressProviderUpdate(
-    'lendingPoolConfiguratorImpl',
-    event.params.newAddress,
-    event,
-    false
-  );
+  genericAddressProviderUpdate('lendingPoolConfiguratorImpl', event.params.newAddress, event, false)
 }
 
 export function handleLendingPoolCollateralManagerUpdated(
-  event: LendingPoolCollateralManagerUpdated
+  event: LendingPoolCollateralManagerUpdated,
 ): void {
   genericAddressProviderUpdate(
     'lendingPoolCollateralManager',
     event.params.newAddress,
     event,
-    false
-  );
+    false,
+  )
 }
 
 export function handleEmergencyAdminUpdated(event: EmergencyAdminUpdated): void {
-  genericAddressProviderUpdate('emergencyAdmin', event.params.newAddress, event, false);
+  genericAddressProviderUpdate('emergencyAdmin', event.params.newAddress, event, false)
 }
