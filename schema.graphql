@@ -270,24 +270,6 @@ type OriginationFeeLiquidation implements UserTransaction @entity {
   timestamp: Int!
 }
 
-type ReserveConfigurationHistoryItem @entity {
-  """
-  tx hash
-  """
-  id: ID!
-  reserve: Reserve!
-  usageAsCollateralEnabled: Boolean!
-  borrowingEnabled: Boolean!
-  stableBorrowRateEnabled: Boolean!
-  isActive: Boolean!
-  isFrozen: Boolean!
-  reserveInterestRateStrategy: Bytes!
-  baseLTVasCollateral: BigInt!
-  reserveLiquidationThreshold: BigInt!
-  reserveLiquidationBonus: BigInt!
-  timestamp: Int!
-}
-
 type ReserveParamsHistoryItem @entity {
   """
   tx hash
@@ -342,6 +324,7 @@ type IncentivesController @entity {
   claimIncentives: [ClaimIncentiveCall!]! @derivedFrom(field: "incentivesController")
 }
 
+"""Created when a user ACCRUES rewards. Only action that happens today"""
 type IncentivizedAction @entity {
   """
   txHash
@@ -352,6 +335,7 @@ type IncentivizedAction @entity {
   amount: BigInt!
 }
 
+"""Created when a user CLAIMS rewards"""
 type ClaimIncentiveCall @entity {
   """
   txHash
@@ -459,7 +443,6 @@ type Reserve @entity {
   originationFeeLiquidationHistory: [OriginationFeeLiquidation!]!
     @derivedFrom(field: "collateralReserve")
   paramsHistory: [ReserveParamsHistoryItem!]! @derivedFrom(field: "reserve")
-  configurationHistory: [ReserveConfigurationHistoryItem!]! @derivedFrom(field: "reserve")
   deposits: [Deposit!]! @derivedFrom(field: "reserve")
 }
 

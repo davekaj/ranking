@@ -9,7 +9,6 @@ import {
   User,
   UserReserve,
   ReserveParamsHistoryItem,
-  ReserveConfigurationHistoryItem,
   Referrer,
   // ChainlinkAggregator,
   ContractToPoolMapping,
@@ -344,26 +343,6 @@ export function getOrInitReserveParamsHistoryItem(
     // reserveParamsHistoryItem.lifetimeVariableDebtFeeCollected = zeroBI();
   }
   return reserveParamsHistoryItem as ReserveParamsHistoryItem
-}
-
-export function getOrInitReserveConfigurationHistoryItem(
-  id: Bytes,
-  reserve: Reserve,
-): ReserveConfigurationHistoryItem {
-  let reserveConfigurationHistoryItem = ReserveConfigurationHistoryItem.load(id.toHexString())
-  if (!reserveConfigurationHistoryItem) {
-    reserveConfigurationHistoryItem = new ReserveConfigurationHistoryItem(id.toHexString())
-    reserveConfigurationHistoryItem.usageAsCollateralEnabled = false
-    reserveConfigurationHistoryItem.borrowingEnabled = false
-    reserveConfigurationHistoryItem.stableBorrowRateEnabled = false
-    reserveConfigurationHistoryItem.isActive = false
-    reserveConfigurationHistoryItem.reserveInterestRateStrategy = new Bytes(1)
-    reserveConfigurationHistoryItem.baseLTVasCollateral = zeroBI()
-    reserveConfigurationHistoryItem.reserveLiquidationThreshold = zeroBI()
-    reserveConfigurationHistoryItem.reserveLiquidationBonus = zeroBI()
-    reserveConfigurationHistoryItem.reserve = reserve.id
-  }
-  return reserveConfigurationHistoryItem as ReserveConfigurationHistoryItem
 }
 
 export function getOrInitReferrer(id: i32): Referrer {

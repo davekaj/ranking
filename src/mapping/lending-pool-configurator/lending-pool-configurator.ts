@@ -20,7 +20,6 @@ import { DefaultReserveInterestRateStrategy } from '../../../generated/templates
 import {
   getOrInitAToken,
   getOrInitReserve,
-  getOrInitReserveConfigurationHistoryItem,
 } from '../../helpers/initializers'
 import { Reserve } from '../../../generated/schema'
 import { zeroAddress, zeroBI } from '../../utils/converters'
@@ -31,19 +30,6 @@ export function saveReserve(reserve: Reserve, event: ethereum.Event): void {
 
   reserve.lastUpdateTimestamp = timestamp
   reserve.save()
-
-  let configurationHistoryItem = getOrInitReserveConfigurationHistoryItem(txHash, reserve)
-  configurationHistoryItem.usageAsCollateralEnabled = reserve.usageAsCollateralEnabled
-  configurationHistoryItem.borrowingEnabled = reserve.borrowingEnabled
-  configurationHistoryItem.stableBorrowRateEnabled = reserve.stableBorrowRateEnabled
-  configurationHistoryItem.isActive = reserve.isActive
-  configurationHistoryItem.isFrozen = reserve.isFrozen
-  configurationHistoryItem.reserveInterestRateStrategy = reserve.reserveInterestRateStrategy
-  configurationHistoryItem.baseLTVasCollateral = reserve.baseLTVasCollateral
-  configurationHistoryItem.reserveLiquidationThreshold = reserve.reserveLiquidationThreshold
-  configurationHistoryItem.reserveLiquidationBonus = reserve.reserveLiquidationBonus
-  configurationHistoryItem.timestamp = timestamp
-  configurationHistoryItem.save()
 }
 
 export function updateInterestRateStrategy(
