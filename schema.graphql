@@ -151,6 +151,7 @@ type User @entity {
   claimIncentives: [ClaimIncentiveCall!]! @derivedFrom(field: "user")
 }
 
+"""UserReserve represents a users debts and assets in a single reserve"""
 type UserReserve @entity {
   "user address + reserve address"
   id: ID!
@@ -260,12 +261,6 @@ type MapAssetPool @entity {
   underlyingAsset: Bytes!
 }
 
-type Referrer @entity {
-  id: ID!
-  deposits: [Deposit!]! @derivedFrom(field: "referrer")
-  borrows: [Borrow!]! @derivedFrom(field: "referrer")
-}
-
 type IncentivesController @entity {
   "address of the incentives controller"
   id: ID!
@@ -369,7 +364,6 @@ type Deposit implements UserTransaction @entity {
   reserve: Reserve!
   userReserve: UserReserve!
   amount: BigInt!
-  referrer: Referrer
   timestamp: Int!
 }
 
@@ -403,7 +397,6 @@ type Borrow implements UserTransaction @entity {
   amount: BigInt!
   borrowRate: BigInt!
   borrowRateMode: BorrowRateMode!
-  referrer: Referrer
   timestamp: Int!
   stableTokenDebt: BigInt!
   variableTokenDebt: BigInt!

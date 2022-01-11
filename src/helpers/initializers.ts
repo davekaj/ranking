@@ -3,16 +3,11 @@ import {
   AToken,
   SToken,
   VToken,
-  // PriceOracle,
-  // PriceOracleAsset,
   Reserve,
   User,
   UserReserve,
-  Referrer,
-  // ChainlinkAggregator,
   ContractToPoolMapping,
   Protocol,
-  // ChainlinkENS, //
 } from '../../generated/schema'
 import {
   PRICE_ORACLE_ASSET_PLATFORM_SIMPLE,
@@ -299,15 +294,6 @@ export function getOrInitAToken(aTokenAddress: Address): AToken {
     aToken.underlyingAssetDecimals = 18
   }
   return aToken as AToken
-}
-
-export function getOrInitReferrer(id: i32): Referrer {
-  let referrer = Referrer.load(id.toString())
-  if (!referrer) {
-    referrer = new Referrer(id.toString())
-    referrer.save()
-  }
-  return referrer as Referrer
 }
 
 export function createMapContractToPool(_contractAddress: Address, pool: string): void {

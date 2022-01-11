@@ -16,7 +16,6 @@ import {
   ReserveDataUpdated,
 } from '../../../generated/templates/LendingPool/LendingPool'
 import {
-  getOrInitReferrer,
   getOrInitReserve,
   getOrInitUser,
   getOrInitUserReserve,
@@ -55,10 +54,6 @@ export function handleDeposit(event: Deposit): void {
   deposit.reserve = poolReserve.id
   deposit.amount = depositedAmount
   deposit.timestamp = event.block.timestamp.toI32()
-  if (event.params.referral) {
-    let referrer = getOrInitReferrer(event.params.referral)
-    deposit.referrer = referrer.id
-  }
   deposit.save()
 }
 
@@ -95,10 +90,6 @@ export function handleBorrow(event: Borrow): void {
   borrow.borrowRate = event.params.borrowRate
   borrow.borrowRateMode = getBorrowRateMode(event.params.borrowRateMode)
   borrow.timestamp = event.block.timestamp.toI32()
-  if (event.params.referral) {
-    let referrer = getOrInitReferrer(event.params.referral)
-    borrow.referrer = referrer.id
-  }
   borrow.save()
 }
 
