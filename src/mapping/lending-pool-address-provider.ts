@@ -16,8 +16,7 @@ import {
   LendingPoolConfigurator as LendingPoolConfiguratorContract,
 } from '../../generated/templates';
 import { createMapContractToPool } from '../helpers/initializers'; // getOrInitPriceOracle commented out - dk
-import { Pool, PoolConfigurationHistoryItem } from '../../generated/schema';
-import { EventTypeRef, getHistoryId } from '../utils/id-generation';
+import { Pool } from '../../generated/schema';
 
 let POOL_COMPONENTS = [
   'lendingPoolConfigurator',
@@ -35,21 +34,6 @@ let POOL_COMPONENTS = [
 function saveAddressProvider(lendingPool: Pool, timestamp: BigInt, event: ethereum.Event): void {
   lendingPool.lastUpdateTimestamp = timestamp.toI32();
   lendingPool.save();
-
-  let configurationHistoryItem = new PoolConfigurationHistoryItem(
-    getHistoryId(event, EventTypeRef.NoType)
-  );
-  for (let i = 0; i < POOL_COMPONENTS.length; i++) {
-    let param = POOL_COMPONENTS[i];
-    let value = lendingPool.get(param);
-    if (!value) {
-      return;
-    }
-    configurationHistoryItem.set(param, value as Value);
-  }
-  configurationHistoryItem.timestamp = timestamp.toI32();
-  configurationHistoryItem.pool = lendingPool.id;
-  configurationHistoryItem.save();
 }
 
 function genericAddressProviderUpdate(

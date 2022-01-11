@@ -11,24 +11,6 @@ type ContractToPoolMapping @entity {
   pool: Pool!
 }
 
-type PoolConfigurationHistoryItem @entity {
-  """
-  tx hash
-  """
-  id: ID!
-  active: Boolean
-  pool: Pool!
-  lendingPool: Bytes
-  lendingPoolCollateralManager: Bytes
-  lendingPoolConfiguratorImpl: Bytes
-  lendingPoolImpl: Bytes 
-  lendingPoolConfigurator: Bytes
-  proxyPriceProvider: Bytes
-  lendingRateOracle: Bytes
-  configurationAdmin: Bytes
-  timestamp: Int!
-}
-
 type Pool @entity {
   id: ID!
   protocol: Protocol!
@@ -42,7 +24,6 @@ type Pool @entity {
   configurationAdmin: Bytes
   ethereumAddress: Bytes
   emergencyAdmin: Bytes
-  history: [PoolConfigurationHistoryItem!]! @derivedFrom(field: "pool")
   lastUpdateTimestamp: Int!
 
   reserves: [Reserve!]! @derivedFrom(field: "pool")
