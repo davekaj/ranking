@@ -42,78 +42,6 @@ type Pool @entity {
   paused: Boolean!
 }
 
-# type PriceHistoryItem @entity {
-#   id: ID!
-#   asset: PriceOracleAsset!
-#   price: BigInt!
-#   timestamp: Int!
-# }
-
-# type UsdEthPriceHistoryItem @entity {
-#   id: ID!
-#   oracle: PriceOracle!
-#   price: BigInt!
-#   timestamp: Int!
-# }
-
-# type ChainlinkENS @entity {
-#   "id is the node hash"
-#   id: ID!
-#   "address of the aggregator"
-#   aggregatorAddress: Bytes!
-#   "token address represented with this aggregator"
-#   underlyingAddress: Bytes!
-#   "symbol of the token represented on the aggregator"
-#   symbol: String!
-# }
-
-# type ChainlinkAggregator @entity {
-#   # aggregator address
-#   id: ID!
-#   oracleAsset: PriceOracleAsset!
-# }
-
-# enum PriceOracleAssetType {
-#   Simple
-#   Composite
-# }
-
-# enum PriceOracleAssetPlatform {
-#   Simple
-#   Uniswap
-# }
-
-# # TODO: check nomenclature
-# type PriceOracleAsset @entity {
-#   # underlying asset address
-#   id: ID!
-#   oracle: PriceOracle!
-#   priceInEth: BigInt!
-#   priceSource: Bytes!
-#   isFallbackRequired: Boolean!
-#   type: PriceOracleAssetType!
-#   platform: PriceOracleAssetPlatform!
-#   dependentAssets: [PriceOracleAsset!]!
-#   lastUpdateTimestamp: Int!
-#   priceHistory: [PriceHistoryItem!]! @derivedFrom(field: "asset")
-#   fromChainlinkSourcesRegistry: Boolean!
-# }
-
-# type PriceOracle @entity {
-#   id: ID!
-#   proxyPriceProvider: Bytes!
-#   usdPriceEth: BigInt!
-#   usdPriceEthMainSource: Bytes!
-#   usdPriceEthFallbackRequired: Boolean!
-#   usdDependentAssets: [PriceOracleAsset!]!
-#   fallbackPriceOracle: Bytes!
-#   tokens: [PriceOracleAsset!]! @derivedFrom(field: "oracle")
-#   usdPriceEthHistory: [UsdEthPriceHistoryItem!]! @derivedFrom(field: "oracle")
-#   tokensWithFallback: [PriceOracleAsset!]!
-#   lastUpdateTimestamp: Int!
-#   version: Int!
-# }
-
 type SToken @entity {
   """
   SToken address
@@ -583,20 +511,6 @@ type STokenBalanceHistoryItem @entity {
   timestamp: Int!
   avgStableBorrowRate: BigInt!
 }
-
-# TODO: not needed any more, can use borrow object and filter by user
-#type UserBorrowHistoryItem @entity {
-#  """
-#  userReserve + txHash
-#  """
-#  id: ID!
-#  userReserve: UserReserve!
-#  totalBorrows: BigInt!
-#  borrowRate: BigInt!
-#  borrowRateMode: BorrowRateMode!
-#  #originationFee: BigInt!
-#  timestamp: Int!
-#}
 
 type StableTokenDelegatedAllowance @entity {
   """
