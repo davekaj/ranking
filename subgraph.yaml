@@ -52,18 +52,18 @@ templates:
         - name: AToken
           file: ./constant-abis/AToken.json
       eventHandlers:
-        - event: AssetConfigUpdated(indexed address,uint256)
-          handler: handleAssetConfigUpdated
+        # - event: AssetConfigUpdated(indexed address,uint256)
+        #   handler: handleAssetConfigUpdated
         - event: RewardsAccrued(indexed address,uint256)
           handler: handleRewardsAccrued
         - event: RewardsClaimed(indexed address,indexed address,indexed address,uint256)
           handler: handleRewardsClaimedClaimer
-        - event: AssetIndexUpdated(indexed address,uint256)
-          handler: handleAssetIndexUpdated
-        - event: UserIndexUpdated(indexed address,indexed address,uint256)
-          handler: handleUserIndexUpdated
-        - event: DistributionEndUpdated(uint256)
-          handler: handleDistributionEndUpdated
+        # - event: AssetIndexUpdated(indexed address,uint256)
+        #   handler: handleAssetIndexUpdated
+        # - event: UserIndexUpdated(indexed address,indexed address,uint256)
+        #   handler: handleUserIndexUpdated
+        # - event: DistributionEndUpdated(uint256)
+        #   handler: handleDistributionEndUpdated
       file: src/mapping/incentives-controller/ethereum.ts
   # --------------------------------------
   #      AToken / Stable / Variable

@@ -50,15 +50,12 @@ type Reserve @entity {
   pool: Pool!
   symbol: String!
   name: String!
-  #uiColor: String! #TODO MOVE: move to the frontend
-  #currencyType: CurrencyType! #TODO MOVE: move to the frontend
   decimals: Int!
   usageAsCollateralEnabled: Boolean! # defalt false
   borrowingEnabled: Boolean! # defalt false
   stableBorrowRateEnabled: Boolean! # defalt false
   isActive: Boolean! # defalt false
   isFrozen: Boolean! # defalt false
-  # price: PriceOracleAsset!
   reserveInterestRateStrategy: Bytes!
   optimalUtilisationRate: BigInt!
   variableRateSlope1: BigInt!
@@ -90,17 +87,6 @@ type Reserve @entity {
   reserveFactor: BigInt! #default 0
   lastUpdateTimestamp: Int!
   stableDebtLastUpdateTimestamp: Int!
-
-  # incentives
-  aEmissionPerSecond: BigInt!
-  vEmissionPerSecond: BigInt!
-  sEmissionPerSecond: BigInt!
-  aTokenIncentivesIndex: BigInt!
-  vTokenIncentivesIndex: BigInt!
-  sTokenIncentivesIndex: BigInt!
-  aIncentivesLastUpdateTimestamp: Int!
-  vIncentivesLastUpdateTimestamp: Int!
-  sIncentivesLastUpdateTimestamp: Int!
 
   lifetimeLiquidity: BigInt! # default: 0
   lifetimePrincipalStableDebt: BigInt! # default: 0
@@ -178,16 +164,9 @@ type UserReserve @entity {
   liquidityRate: BigInt!
   stableBorrowLastUpdateTimestamp: Int!
   variableBorrowIndex: BigInt!
+  lastUpdateTimestamp: Int!
 
   # incentives
-  aTokenincentivesUserIndex: BigInt!
-  vTokenincentivesUserIndex: BigInt!
-  sTokenincentivesUserIndex: BigInt!
-  aIncentivesLastUpdateTimestamp: Int!
-  vIncentivesLastUpdateTimestamp: Int!
-  sIncentivesLastUpdateTimestamp: Int!
-  "Amount in currency units included as fee"
-  lastUpdateTimestamp: Int!
   stableTokenDelegatedAllowances: [StableTokenDelegatedAllowance!]!
     @derivedFrom(field: "userReserve")
   variableTokenDelegatedAllowances: [VariableTokenDelegatedAllowance!]!

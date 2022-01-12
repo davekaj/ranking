@@ -1,12 +1,12 @@
 import { RewardsClaimed1 } from '../../../generated/templates/AaveIncentivesController/AaveIncentivesController'
 import { handleRewardsClaimedCommon } from './incentives-controller'
 export {
-  handleAssetConfigUpdated,
+  // handleAssetConfigUpdated,
   handleRewardsAccrued,
-  handleAssetIndexUpdated,
-  handleUserIndexUpdated,
+  // handleAssetIndexUpdated,
+  // handleUserIndexUpdated,
   handleRewardsClaimed,
-  handleDistributionEndUpdated,
+  // handleDistributionEndUpdated,
 } from './incentives-controller'
 
 // This event has the claimer field.

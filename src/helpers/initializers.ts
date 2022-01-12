@@ -72,17 +72,9 @@ function initUserReserve(
     userReserve.oldStableBorrowRate = zeroBI()
     userReserve.currentTotalDebt = zeroBI()
     userReserve.variableBorrowIndex = zeroBI()
-    userReserve.lastUpdateTimestamp = 0
     userReserve.liquidityRate = zeroBI()
     userReserve.stableBorrowLastUpdateTimestamp = 0
-
-    // incentives
-    userReserve.aTokenincentivesUserIndex = zeroBI()
-    userReserve.vTokenincentivesUserIndex = zeroBI()
-    userReserve.sTokenincentivesUserIndex = zeroBI()
-    userReserve.aIncentivesLastUpdateTimestamp = 0
-    userReserve.vIncentivesLastUpdateTimestamp = 0
-    userReserve.sIncentivesLastUpdateTimestamp = 0
+    userReserve.lastUpdateTimestamp = 0
 
     let user = getOrInitUser(userAddress)
     userReserve.user = user.id
@@ -153,17 +145,6 @@ export function getOrInitReserve(underlyingAsset: Address, event: ethereum.Event
     reserve.aToken = zeroAddress().toHexString()
     reserve.vToken = zeroAddress().toHexString()
     reserve.sToken = zeroAddress().toHexString()
-
-    // incentives
-    reserve.aEmissionPerSecond = zeroBI()
-    reserve.vEmissionPerSecond = zeroBI()
-    reserve.sEmissionPerSecond = zeroBI()
-    reserve.aTokenIncentivesIndex = zeroBI()
-    reserve.vTokenIncentivesIndex = zeroBI()
-    reserve.sTokenIncentivesIndex = zeroBI()
-    reserve.aIncentivesLastUpdateTimestamp = 0
-    reserve.vIncentivesLastUpdateTimestamp = 0
-    reserve.sIncentivesLastUpdateTimestamp = 0
 
     reserve.totalScaledVariableDebt = zeroBI()
     reserve.totalCurrentVariableDebt = zeroBI()
