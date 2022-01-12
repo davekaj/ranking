@@ -1,3 +1,7 @@
+############
+# Protocol #
+############
+
 """
 Protocol contains the Aave Pools
 """
@@ -188,6 +192,44 @@ type UserReserve @entity {
 }
 
 """
+Maps Proxy address to Pool
+"""
+type ContractToPoolMapping @entity {
+  id: ID!
+  pool: Pool!
+}
+
+"""
+Maps a/v/s token addresses to their pools and underlying asset IDs
+"""
+type MapAssetPool @entity {
+  id: ID!
+  pool: String!
+  underlyingAsset: Bytes!
+}
+
+"""
+The incentives controller is setup to work with stkAAVE. There is currently only one controller for
+all a/v/s tokens.
+"""
+type IncentivesController @entity {
+  "address of the incentives controller"
+  id: ID!
+  rewardToken: Bytes!
+  rewardTokenDecimals: Int!
+  rewardTokenSymbol: String!
+  precision: Int!
+  emissionEndTimestamp: Int!
+
+  incentivizedActions: [IncentivizedAction!]! @derivedFrom(field: "incentivesController")
+  claimIncentives: [ClaimIncentiveCall!]! @derivedFrom(field: "incentivesController")
+}
+
+##########
+# Tokens # TODO - I might just move these into the reserves. I don't really have a use for a unique entity here.
+##########
+
+"""
 An SToken contract that is deployed
 """
 type SToken @entity {
@@ -245,39 +287,9 @@ type StableDebtToken @entity {
   underlyingAssetDecimals: Int!
 }
 
-"""
-Maps Proxy address to Pool
-"""
-type ContractToPoolMapping @entity {
-  id: ID!
-  pool: Pool!
-}
-
-"""
-Maps a/v/s token addresses to their pools and underlying asset IDs
-"""
-type MapAssetPool @entity {
-  id: ID!
-  pool: String!
-  underlyingAsset: Bytes!
-}
-
-"""
-The incentives controller is setup to work with stkAAVE. There is currently only one controller for
-all a/v/s tokens.
-"""
-type IncentivesController @entity {
-  "address of the incentives controller"
-  id: ID!
-  rewardToken: Bytes!
-  rewardTokenDecimals: Int!
-  rewardTokenSymbol: String!
-  precision: Int!
-  emissionEndTimestamp: Int!
-
-  incentivizedActions: [IncentivizedAction!]! @derivedFrom(field: "incentivesController")
-  claimIncentives: [ClaimIncentiveCall!]! @derivedFrom(field: "incentivesController")
-}
+###########
+# Actions #
+###########
 
 """
 Created when a user ACCRUES rewards. Only action that happens today
@@ -301,6 +313,10 @@ type ClaimIncentiveCall @entity {
   amount: BigInt!
 }
 
+#######################
+# Historical Balances # TODO - DK - Maybe make them explicit on what was paid up or down, rather than the amount. Jan 12th 2022
+#######################             This makes it more in line with what we are building. I think aave built it with a chart in mind
+#                                   It is a bit more in line with the way IncentivizedAction and ClaimIncentiveCall work
 """
 Balance History
 """
@@ -535,6 +551,8 @@ type OriginationFeeLiquidation implements UserTransaction @entity {
   timestamp: Int!
 }
 
+# TODO - DK - Jan 12th 2022 - Can we configure this to be used in a different way? such as, giving a score to a flash loan?
+#                             Or should I just remove flashloans altogether?
 """
 Transaction data
 """
