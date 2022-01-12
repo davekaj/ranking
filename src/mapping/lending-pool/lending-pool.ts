@@ -12,7 +12,6 @@ import {
   Repay,
   ReserveUsedAsCollateralDisabled,
   ReserveUsedAsCollateralEnabled,
-  Swap,
   ReserveDataUpdated,
 } from '../../../generated/templates/LendingPool/LendingPool'
 import {

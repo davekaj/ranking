@@ -10,8 +10,6 @@ import {
   Protocol,
 } from '../../generated/schema'
 import {
-  PRICE_ORACLE_ASSET_PLATFORM_SIMPLE,
-  PRICE_ORACLE_ASSET_TYPE_SIMPLE,
   zeroAddress,
   zeroBD,
   zeroBI,

@@ -1,4 +1,4 @@
-import { BigInt, BigDecimal, Bytes, ByteArray, crypto, log, Value } from '@graphprotocol/graph-ts'
+import { BigInt, BigDecimal, Bytes, ByteArray, crypto, log } from '@graphprotocol/graph-ts'
 
 export function zeroBD(): BigDecimal {
   return BigDecimal.fromString('0')
@@ -77,44 +77,44 @@ export function getBorrowRateModeFromString(_mode: string): BigInt {
   throw new Error('invalid borrow rate mode')
 }
 
-export const PRICE_ORACLE_ASSET_TYPE_SIMPLE = 'Simple'
-export const PRICE_ORACLE_ASSET_TYPE_COMPOSITE = 'Composite'
+// export const PRICE_ORACLE_ASSET_TYPE_SIMPLE = 'Simple'
+// export const PRICE_ORACLE_ASSET_TYPE_COMPOSITE = 'Composite'
 
-export function getPriceOracleAssetType(_type: BigInt): string {
-  let type = _type.toI32()
+// export function getPriceOracleAssetType(_type: BigInt): string {
+//   let type = _type.toI32()
 
-  if (type == 1) {
-    return PRICE_ORACLE_ASSET_TYPE_SIMPLE
-  } else if (type == 2) {
-    return PRICE_ORACLE_ASSET_TYPE_COMPOSITE
-  }
-  throw new Error('invalid price oracle asset type')
-}
+//   if (type == 1) {
+//     return PRICE_ORACLE_ASSET_TYPE_SIMPLE
+//   } else if (type == 2) {
+//     return PRICE_ORACLE_ASSET_TYPE_COMPOSITE
+//   }
+//   throw new Error('invalid price oracle asset type')
+// }
 
-export const PRICE_ORACLE_ASSET_PLATFORM_SIMPLE = 'Simple'
-export const PRICE_ORACLE_ASSET_PLATFORM_UNISWAP = 'Uniswap'
-export const PRICE_ORACLE_ASSET_PLATFORM_BALANCER = 'Balancer'
-export const PRICE_ORACLE_ASSET_PLATFORM_GELATO = 'Gelato'
-export const PRICE_ORACLE_ASSET_PLATFORM_ERROR = 'Error'
+// export const PRICE_ORACLE_ASSET_PLATFORM_SIMPLE = 'Simple'
+// export const PRICE_ORACLE_ASSET_PLATFORM_UNISWAP = 'Uniswap'
+// export const PRICE_ORACLE_ASSET_PLATFORM_BALANCER = 'Balancer'
+// export const PRICE_ORACLE_ASSET_PLATFORM_GELATO = 'Gelato'
+// export const PRICE_ORACLE_ASSET_PLATFORM_ERROR = 'Error'
 
-export function getPriceOracleAssetPlatform(_type: BigInt): string {
-  let type = _type.toI32()
+// export function getPriceOracleAssetPlatform(_type: BigInt): string {
+//   let type = _type.toI32()
 
-  if (type == 1) {
-    return PRICE_ORACLE_ASSET_PLATFORM_SIMPLE
-  } else if (type == 2) {
-    return PRICE_ORACLE_ASSET_PLATFORM_UNISWAP
-  } else if (type == 3) {
-    return PRICE_ORACLE_ASSET_PLATFORM_BALANCER
-  } else if (type == 4) {
-    return PRICE_ORACLE_ASSET_PLATFORM_GELATO
-  } else {
-    // other untraked types:
-    log.error('This type is not tracked:: {}', [type.toString()])
-    return PRICE_ORACLE_ASSET_PLATFORM_ERROR
-  }
-  // throw new Error('invalid price oracle asset platform');
-}
+//   if (type == 1) {
+//     return PRICE_ORACLE_ASSET_PLATFORM_SIMPLE
+//   } else if (type == 2) {
+//     return PRICE_ORACLE_ASSET_PLATFORM_UNISWAP
+//   } else if (type == 3) {
+//     return PRICE_ORACLE_ASSET_PLATFORM_BALANCER
+//   } else if (type == 4) {
+//     return PRICE_ORACLE_ASSET_PLATFORM_GELATO
+//   } else {
+//     // other untraked types:
+//     log.error('This type is not tracked:: {}', [type.toString()])
+//     return PRICE_ORACLE_ASSET_PLATFORM_ERROR
+//   }
+//   // throw new Error('invalid price oracle asset platform');
+// }
 
 export function byteArrayFromHex(s: string): ByteArray {
   if (s.length % 2 !== 0) {

@@ -166,7 +166,6 @@ type UserReserve @entity {
   variableBorrowIndex: BigInt!
   lastUpdateTimestamp: Int!
 
-  # incentives
   stableTokenDelegatedAllowances: [StableTokenDelegatedAllowance!]!
     @derivedFrom(field: "userReserve")
   variableTokenDelegatedAllowances: [VariableTokenDelegatedAllowance!]!
@@ -174,7 +173,6 @@ type UserReserve @entity {
   aTokenBalanceHistory: [ATokenBalanceHistoryItem!]! @derivedFrom(field: "userReserve")
   vTokenBalanceHistory: [VTokenBalanceHistoryItem!]! @derivedFrom(field: "userReserve")
   sTokenBalanceHistory: [STokenBalanceHistoryItem!]! @derivedFrom(field: "userReserve")
-  #borrowStateHistory: [UserBorrowHistoryItem!]! @derivedFrom(field: "userReserve")
 
   usageAsCollateralHistory: [UsageAsCollateral!]! @derivedFrom(field: "userReserve")
   depositHistory: [Deposit!]! @derivedFrom(field: "userReserve")
@@ -447,6 +445,7 @@ type Borrow implements UserTransaction @entity {
   variableTokenDebt: BigInt!
 }
 
+# TODO - DK - Jan 12th 2022 - Not really clear this would be very useful. But it could be. Keeping for now
 """
 Transaction data
 """

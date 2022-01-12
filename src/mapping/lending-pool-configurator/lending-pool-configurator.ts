@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-inferrable-types */
 import { Bytes, Address, ethereum, log } from '@graphprotocol/graph-ts'
 
 import {
@@ -37,10 +36,6 @@ export function updateInterestRateStrategy(
   strategy: Bytes,
   init: boolean = false,
 ): void {
-  log.warning('Reserve:  {}', [reserve.id])
-  log.warning('strat:  {}', [strategy.toHexString()])
-  log.warning('init:  {}', [init ? 'true' : 'false'])
-
   let interestRateStrategyContract = DefaultReserveInterestRateStrategy.bind(
     changetype<Address>(strategy),
   )
@@ -67,7 +62,7 @@ export function handleReserveInterestRateStrategyChanged(
   if (stableSlope1.reverted || stableSlope2.reverted) {
     return
   }
-  //////
+
   let reserve = getOrInitReserve(event.params.asset, event)
   // if reserve is not initialize, needed to handle ropsten wrong deployment
   if (reserve.aToken == zeroAddress().toHexString()) {

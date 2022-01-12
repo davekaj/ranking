@@ -58,9 +58,6 @@ export function handleReserveInitialized(event: ReserveInitialized): void {
 
   reserve.decimals = ERC20ReserveContract.decimals()
 
-  log.warning('Reserve1: {}', [reserve.id])
-  log.warning('strat1:  {}', [event.params.interestRateStrategyAddress.toHexString()])
-  log.warning('init1:  {}', [true ? 'true' : 'false'])
   updateInterestRateStrategy(reserve, event.params.interestRateStrategyAddress, true)
 
   ATokenContract.create(event.params.aToken)

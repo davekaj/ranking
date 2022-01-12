@@ -65,7 +65,6 @@ function createIncentivesController(
 }
 
 export function handleATokenInitialized(event: ATokenInitialized): void {
-  // log.warning('Incentives controller is 0x0 for asset: {} | underlyingasset: {} | pool: {}', []);
   createIncentivesController(
     event.address,
     event.params.incentivesController,

@@ -1,4 +1,4 @@
-import { Address, BigInt, ethereum, log } from '@graphprotocol/graph-ts'
+import { BigInt } from '@graphprotocol/graph-ts'
 import { zeroBI } from '../utils/converters'
 
 let RAY = BigInt.fromI32(10).pow(27)
