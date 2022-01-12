@@ -12,7 +12,6 @@ export enum EventTypeRef {
   RebalanceStableBorrowRate,
   LiquidationCall,
   FlashLoan,
-  OriginationFeeLiquidation,
   SwapAdapter,
 }
 

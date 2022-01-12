@@ -30,7 +30,6 @@ import {
   RebalanceStableBorrowRate as RebalanceStableBorrowRateAction,
   RedeemUnderlying as RedeemUnderlyingAction,
   Repay as RepayAction,
-  Swap as SwapAction,
   UsageAsCollateral as UsageAsCollateralAction,
 } from '../../../generated/schema'
 import { EventTypeRef, getHistoryId } from '../../utils/id-generation'

@@ -38,7 +38,6 @@ type Pool @entity {
   repayHistory: [Repay!]! @derivedFrom(field: "pool")
   flashLoanHistory: [FlashLoan!]! @derivedFrom(field: "pool")
   liquidationCallHistory: [LiquidationCall!]! @derivedFrom(field: "pool")
-  originationFeeLiquidationHistory: [OriginationFeeLiquidation!]! @derivedFrom(field: "pool")
 
   active: Boolean!
   paused: Boolean!
@@ -115,8 +114,6 @@ type Reserve @entity {
   repayHistory: [Repay!]! @derivedFrom(field: "reserve")
   flashLoanHistory: [FlashLoan!]! @derivedFrom(field: "reserve")
   liquidationCallHistory: [LiquidationCall!]! @derivedFrom(field: "collateralReserve")
-  originationFeeLiquidationHistory: [OriginationFeeLiquidation!]!
-    @derivedFrom(field: "collateralReserve")
   deposits: [Deposit!]! @derivedFrom(field: "reserve")
 }
 
@@ -141,7 +138,6 @@ type User @entity {
   rebalanceStableBorrowRateHistory: [RebalanceStableBorrowRate!]! @derivedFrom(field: "user")
   repayHistory: [Repay!]! @derivedFrom(field: "user")
   liquidationCallHistory: [LiquidationCall!]! @derivedFrom(field: "user")
-  originationFeeLiquidationHistory: [OriginationFeeLiquidation!]! @derivedFrom(field: "user")
   incentivizedActions: [IncentivizedAction!]! @derivedFrom(field: "user")
   claimIncentives: [ClaimIncentiveCall!]! @derivedFrom(field: "user")
 }
@@ -187,8 +183,6 @@ type UserReserve @entity {
   rebalanceStableBorrowRateHistory: [RebalanceStableBorrowRate!]! @derivedFrom(field: "userReserve")
   repayHistory: [Repay!]! @derivedFrom(field: "userReserve")
   liquidationCallHistory: [LiquidationCall!]! @derivedFrom(field: "collateralUserReserve")
-  originationFeeLiquidationHistory: [OriginationFeeLiquidation!]!
-    @derivedFrom(field: "collateralUserReserve")
 }
 
 """
@@ -454,23 +448,6 @@ type Borrow implements UserTransaction @entity {
 }
 
 """
-Swap Transaction data
-"""
-type Swap implements UserTransaction @entity {
-  "tx hash"
-  id: ID!
-  pool: Pool!
-  user: User!
-  reserve: Reserve!
-  userReserve: UserReserve!
-  borrowRateModeFrom: BorrowRateMode!
-  borrowRateModeTo: BorrowRateMode!
-  stableBorrowRate: BigInt!
-  variableBorrowRate: BigInt!
-  timestamp: Int!
-}
-
-"""
 Transaction data
 """
 type UsageAsCollateral implements UserTransaction @entity {
@@ -485,6 +462,7 @@ type UsageAsCollateral implements UserTransaction @entity {
   timestamp: Int!
 }
 
+# TODO - DK - Jan 12th 2022. Pretty rare that this would happen. And likely I can remove it in the near future
 """
 Transaction data
 """
@@ -531,23 +509,6 @@ type LiquidationCall implements UserTransaction @entity {
   principalUserReserve: UserReserve!
   principalAmount: BigInt!
   liquidator: Bytes!
-  timestamp: Int!
-}
-
-"""
-Transaction data
-"""
-type OriginationFeeLiquidation implements UserTransaction @entity {
-  "tx hash"
-  id: ID!
-  pool: Pool!
-  user: User!
-  collateralReserve: Reserve!
-  collateralUserReserve: UserReserve!
-  principalReserve: Reserve!
-  principalUserReserve: UserReserve!
-  feeLiquidated: BigInt!
-  liquidatedCollateralForFee: BigInt!
   timestamp: Int!
 }
 
