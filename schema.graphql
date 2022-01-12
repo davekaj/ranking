@@ -1,3 +1,6 @@
+"""
+Protocol contains the Aave Pools
+"""
 type Protocol @entity {
   id: ID!
   pools: [Pool!]! @derivedFrom(field: "protocol")
@@ -127,7 +130,9 @@ type Reserve @entity {
   deposits: [Deposit!]! @derivedFrom(field: "reserve")
 }
 
-
+"""
+User entity which is linked to all actions, and historical status of the user. As well as incentives.
+"""
 type User @entity {
   "user address"
   id: ID!
@@ -151,7 +156,9 @@ type User @entity {
   claimIncentives: [ClaimIncentiveCall!]! @derivedFrom(field: "user")
 }
 
-"""UserReserve represents a users debts and assets in a single reserve"""
+"""
+UserReserve represents a users debts and assets in a single reserve
+"""
 type UserReserve @entity {
   "user address + reserve address"
   id: ID!
@@ -201,6 +208,9 @@ type UserReserve @entity {
     @derivedFrom(field: "collateralUserReserve")
 }
 
+"""
+An SToken contract that is deployed
+"""
 type SToken @entity {
   "SToken address"
   id: ID!
@@ -210,6 +220,9 @@ type SToken @entity {
   tokenContractImpl: Bytes!
 }
 
+"""
+A VToken contract that is deployed
+"""
 type VToken @entity {
   "VToken address"
   id: ID!
@@ -219,6 +232,9 @@ type VToken @entity {
   tokenContractImpl: Bytes!
 }
 
+"""
+An AToken contract that is deployed
+"""
 type AToken @entity {
   "AToken address"
   id: ID!
@@ -228,6 +244,9 @@ type AToken @entity {
   tokenContractImpl: Bytes!
 }
 
+"""
+A VariableDebtToken contract that is deployed
+"""
 type VariableDebtToken @entity {
   "VariableDebtToken address"
   id: ID!
@@ -236,6 +255,9 @@ type VariableDebtToken @entity {
   underlyingAssetDecimals: Int!
 }
 
+"""
+A StableDebtToken contract that is deployed
+"""
 type StableDebtToken @entity {
   "StableDebtToken address"
   id: ID!
@@ -261,6 +283,10 @@ type MapAssetPool @entity {
   underlyingAsset: Bytes!
 }
 
+"""
+The incentives controller is setup to work with stkAAVE. There is currently only one controller for
+all a/v/s tokens.
+"""
 type IncentivesController @entity {
   "address of the incentives controller"
   id: ID!
@@ -296,6 +322,9 @@ type ClaimIncentiveCall @entity {
   amount: BigInt!
 }
 
+"""
+Balance History
+"""
 type ATokenBalanceHistoryItem @entity {
   "userReserve + txHash"
   id: ID!
@@ -306,6 +335,9 @@ type ATokenBalanceHistoryItem @entity {
   index: BigInt!
 }
 
+"""
+Balance History
+"""
 type VTokenBalanceHistoryItem @entity {
   "userReserve + txHash"
   id: ID!
@@ -316,6 +348,9 @@ type VTokenBalanceHistoryItem @entity {
   index: BigInt!
 }
 
+"""
+Balance History
+"""
 type STokenBalanceHistoryItem @entity {
   "userReserve + txHash"
   id: ID!
@@ -326,6 +361,9 @@ type STokenBalanceHistoryItem @entity {
   avgStableBorrowRate: BigInt!
 }
 
+"""
+Debt allowance given from one user to another
+"""
 type StableTokenDelegatedAllowance @entity {
   "stable + fromUser address + toUser address+ reserve address"
   id: ID!
@@ -335,6 +373,9 @@ type StableTokenDelegatedAllowance @entity {
   userReserve: UserReserve!
 }
 
+"""
+Debt allowance given from one user to another
+"""
 type VariableTokenDelegatedAllowance @entity {
   "variable + fromuser address + touser address+ reserve address"
   id: ID!
@@ -348,6 +389,9 @@ type VariableTokenDelegatedAllowance @entity {
 # User Transactions #
 #####################
 
+"""
+Basic interface for User Protocol Transactions
+"""
 interface UserTransaction {
   id: ID!
   pool: Pool!
@@ -355,6 +399,9 @@ interface UserTransaction {
   timestamp: Int!
 }
 
+"""
+Deposit Transaction data
+"""
 type Deposit implements UserTransaction @entity {
   "tx hash"
   id: ID!
@@ -368,6 +415,9 @@ type Deposit implements UserTransaction @entity {
 }
 
 # TODO: check nomenclature for new v2
+"""
+Redeem Underlying Transaction Data
+"""
 type RedeemUnderlying implements UserTransaction @entity {
   "tx hash"
   id: ID!
@@ -380,12 +430,18 @@ type RedeemUnderlying implements UserTransaction @entity {
   timestamp: Int!
 }
 
+"""
+A user must borrow from a reserve in either stable or variable mode.
+"""
 enum BorrowRateMode {
   None
   Stable
   Variable
 }
 
+"""
+Borrow Transaction data
+"""
 type Borrow implements UserTransaction @entity {
   "tx hash"
   id: ID!
@@ -402,6 +458,9 @@ type Borrow implements UserTransaction @entity {
   variableTokenDebt: BigInt!
 }
 
+"""
+Swap Transaction data
+"""
 type Swap implements UserTransaction @entity {
   "tx hash"
   id: ID!
@@ -416,6 +475,9 @@ type Swap implements UserTransaction @entity {
   timestamp: Int!
 }
 
+"""
+Transaction data
+"""
 type UsageAsCollateral implements UserTransaction @entity {
   "tx hash"
   id: ID!
@@ -428,6 +490,9 @@ type UsageAsCollateral implements UserTransaction @entity {
   timestamp: Int!
 }
 
+"""
+Transaction data
+"""
 type RebalanceStableBorrowRate implements UserTransaction @entity {
   "tx hash"
   id: ID!
@@ -441,6 +506,9 @@ type RebalanceStableBorrowRate implements UserTransaction @entity {
   timestamp: Int!
 }
 
+"""
+Transaction data
+"""
 type Repay implements UserTransaction @entity {
   "tx hash"
   id: ID!
@@ -453,6 +521,9 @@ type Repay implements UserTransaction @entity {
   timestamp: Int!
 }
 
+"""
+Transaction data
+"""
 type LiquidationCall implements UserTransaction @entity {
   "tx hash"
   id: ID!
@@ -468,6 +539,9 @@ type LiquidationCall implements UserTransaction @entity {
   timestamp: Int!
 }
 
+"""
+Transaction data
+"""
 type OriginationFeeLiquidation implements UserTransaction @entity {
   "tx hash"
   id: ID!
@@ -482,6 +556,9 @@ type OriginationFeeLiquidation implements UserTransaction @entity {
   timestamp: Int!
 }
 
+"""
+Transaction data
+"""
 type FlashLoan @entity {
   "tx hash"
   id: ID!

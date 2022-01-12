@@ -39,13 +39,18 @@
 - `/proxy-price-provider`
   - Everything here just has to do with Price. 
 - `/tokenization`
-  - `initialization.ts` - Just inits the A,V,S tokens. But when this happens, the incentives controllers also get created for these tokens.
+  - `initialization.ts` - Just inits the A,V,S tokens. Every a/v/s token is connected to the same Incentive Controller
   - `tokenization.ts`
     - Handles A,V,S token transfers, mints, burns
     - Which subsequently updates UserReserve and Reserve status
     - Also handles delegation of credit
 - `/incentives-controller`
-  - 
+  - Accrue rewards
+  - Claim rewards
+  - Records a user index and a reserve index, similar to how most of the liquidity mining protocols work
+  - A good place to explore the Incentives Controller Code - https://etherscan.deth.net/address/0x83d055d382f25e6793099713505c68a5c7535a35#code
+    - I am not going to dig into it too much. But basically it just allows many tokens to be part of the incentives, such as you see on the aave front end.
+    - It may allow for multiple incentives controllers to exist, thus accumulating multiple reward tokens, from multiple reserves
 
 # NOT SURE YET
 - it might be that the Pool actually has the ID of the LendingPoolAddressesProvider. They share the same
