@@ -271,12 +271,12 @@ templates:
           handler: handleBorrow
         - event: Repay(indexed address,indexed address,indexed address,uint256)
           handler: handleRepay
-        - event: ReserveUsedAsCollateralEnabled(indexed address,indexed address)
-          handler: handleReserveUsedAsCollateralEnabled
-        - event: ReserveUsedAsCollateralDisabled(indexed address,indexed address)
-          handler: handleReserveUsedAsCollateralDisabled
-        - event: RebalanceStableBorrowRate(indexed address,indexed address)
-          handler: handleRebalanceStableBorrowRate
+        # - event: ReserveUsedAsCollateralEnabled(indexed address,indexed address)
+        #   handler: handleReserveUsedAsCollateralEnabled
+        # - event: ReserveUsedAsCollateralDisabled(indexed address,indexed address)
+        #   handler: handleReserveUsedAsCollateralDisabled
+        # - event: RebalanceStableBorrowRate(indexed address,indexed address)
+        #   handler: handleRebalanceStableBorrowRate
         - event: FlashLoan(indexed address,indexed address,indexed address,uint256,uint256,uint16)
           handler: handleFlashLoan
         - event: LiquidationCall(indexed address,indexed address,indexed address,uint256,uint256,address,bool)

@@ -7,12 +7,10 @@ export enum EventTypeRef {
   Borrow,
   Redeem,
   Repay,
-  Swap,
-  UsageAsCollateral,
-  RebalanceStableBorrowRate,
+  // UsageAsCollateral,
+  // RebalanceStableBorrowRate,
   LiquidationCall,
-  FlashLoan,
-  SwapAdapter,
+  // FlashLoan,
 }
 
 export function getHistoryId(

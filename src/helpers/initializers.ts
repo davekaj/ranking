@@ -59,7 +59,7 @@ function initUserReserve(
   if (userReserve === null) {
     userReserve = new UserReserve(userReserveId)
     userReserve.pool = poolId
-    userReserve.usageAsCollateralEnabledOnUser = false
+    // userReserve.usageAsCollateralEnabledOnUser = false
     userReserve.scaledATokenBalance = zeroBI()
     userReserve.scaledVariableDebt = zeroBI()
     userReserve.principalStableDebt = zeroBI()
@@ -113,7 +113,7 @@ export function getOrInitReserve(underlyingAsset: Address, event: ethereum.Event
     reserve.symbol = ''
     reserve.name = ''
     reserve.decimals = 0
-    reserve.usageAsCollateralEnabled = false
+    // reserve.usageAsCollateralEnabled = false
     reserve.borrowingEnabled = false
     reserve.stableBorrowRateEnabled = false
     reserve.isActive = false

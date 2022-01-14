@@ -1,6 +1,6 @@
-############
-# Protocol #
-############
+#####################
+# Protocol Entities #
+#####################
 
 """
 Protocol contains the Aave Pools
@@ -14,7 +14,7 @@ type Protocol @entity {
 A Pool represents a group of reserves that can be used to borrow and lend against each others.
 For example, Aave Ethereum has two Pools. The normal Pool and the AMM Pool.
 """
-type Pool @entity {
+type Pool @entity { # TODO - dk Jan 13th - I can likely remove some of the Fextra info on the reserve
   id: ID!
   protocol: Protocol!
   lendingPool: Bytes
@@ -33,10 +33,10 @@ type Pool @entity {
   depositHistory: [Deposit!]! @derivedFrom(field: "pool")
   redeemUnderlyingHistory: [RedeemUnderlying!]! @derivedFrom(field: "pool")
   borrowHistory: [Borrow!]! @derivedFrom(field: "pool")
-  usageAsCollateralHistory: [UsageAsCollateral!]! @derivedFrom(field: "pool")
-  rebalanceStableBorrowRateHistory: [RebalanceStableBorrowRate!]! @derivedFrom(field: "pool")
+  # usageAsCollateralHistory: [UsageAsCollateral!]! @derivedFrom(field: "pool")
+  # rebalanceStableBorrowRateHistory: [RebalanceStableBorrowRate!]! @derivedFrom(field: "pool")
   repayHistory: [Repay!]! @derivedFrom(field: "pool")
-  flashLoanHistory: [FlashLoan!]! @derivedFrom(field: "pool")
+  # flashLoanHistory: [FlashLoan!]! @derivedFrom(field: "pool")
   liquidationCallHistory: [LiquidationCall!]! @derivedFrom(field: "pool")
 
   active: Boolean!
@@ -46,7 +46,7 @@ type Pool @entity {
 """
 A Reserve is a contract that represents 1 underlying token for all a/v/s tokens in a single pool
 """
-type Reserve @entity {
+type Reserve @entity { # TODO - dk Jan 13th - I can likely remove a lot of extra info on the reserve
   "Reserve Address"
   id: ID!
   underlyingAsset: Bytes!
@@ -54,7 +54,7 @@ type Reserve @entity {
   symbol: String!
   name: String!
   decimals: Int!
-  usageAsCollateralEnabled: Boolean! # defalt false
+  # usageAsCollateralEnabled: Boolean! # defalt false
   borrowingEnabled: Boolean! # defalt false
   stableBorrowRateEnabled: Boolean! # defalt false
   isActive: Boolean! # defalt false
@@ -109,10 +109,10 @@ type Reserve @entity {
   depositHistory: [Deposit!]! @derivedFrom(field: "reserve")
   redeemUnderlyingHistory: [RedeemUnderlying!]! @derivedFrom(field: "reserve")
   borrowHistory: [Borrow!]! @derivedFrom(field: "reserve")
-  usageAsCollateralHistory: [UsageAsCollateral!]! @derivedFrom(field: "reserve")
-  rebalanceStableBorrowRateHistory: [RebalanceStableBorrowRate!]! @derivedFrom(field: "reserve")
+  # usageAsCollateralHistory: [UsageAsCollateral!]! @derivedFrom(field: "reserve")
+  # rebalanceStableBorrowRateHistory: [RebalanceStableBorrowRate!]! @derivedFrom(field: "reserve")
   repayHistory: [Repay!]! @derivedFrom(field: "reserve")
-  flashLoanHistory: [FlashLoan!]! @derivedFrom(field: "reserve")
+  # flashLoanHistory: [FlashLoan!]! @derivedFrom(field: "reserve")
   liquidationCallHistory: [LiquidationCall!]! @derivedFrom(field: "collateralReserve")
   deposits: [Deposit!]! @derivedFrom(field: "reserve")
 }
@@ -133,9 +133,9 @@ type User @entity {
   reserves: [UserReserve!]! @derivedFrom(field: "user")
   depositHistory: [Deposit!]! @derivedFrom(field: "user")
   redeemUnderlyingHistory: [RedeemUnderlying!]! @derivedFrom(field: "user")
-  usageAsCollateralHistory: [UsageAsCollateral!]! @derivedFrom(field: "user")
+  # usageAsCollateralHistory: [UsageAsCollateral!]! @derivedFrom(field: "user")
   borrowHistory: [Borrow!]! @derivedFrom(field: "user")
-  rebalanceStableBorrowRateHistory: [RebalanceStableBorrowRate!]! @derivedFrom(field: "user")
+  # rebalanceStableBorrowRateHistory: [RebalanceStableBorrowRate!]! @derivedFrom(field: "user")
   repayHistory: [Repay!]! @derivedFrom(field: "user")
   liquidationCallHistory: [LiquidationCall!]! @derivedFrom(field: "user")
   incentivizedActions: [IncentivizedAction!]! @derivedFrom(field: "user")
@@ -151,7 +151,7 @@ type UserReserve @entity {
   pool: Pool!
   reserve: Reserve!
   user: User!
-  usageAsCollateralEnabledOnUser: Boolean!
+  # usageAsCollateralEnabledOnUser: Boolean!
   scaledATokenBalance: BigInt!
   currentATokenBalance: BigInt!
   scaledVariableDebt: BigInt!
@@ -174,11 +174,11 @@ type UserReserve @entity {
   vTokenBalanceHistory: [VTokenBalanceHistoryItem!]! @derivedFrom(field: "userReserve")
   sTokenBalanceHistory: [STokenBalanceHistoryItem!]! @derivedFrom(field: "userReserve")
 
-  usageAsCollateralHistory: [UsageAsCollateral!]! @derivedFrom(field: "userReserve")
+  # usageAsCollateralHistory: [UsageAsCollateral!]! @derivedFrom(field: "userReserve")
   depositHistory: [Deposit!]! @derivedFrom(field: "userReserve")
   redeemUnderlyingHistory: [RedeemUnderlying!]! @derivedFrom(field: "userReserve")
   borrowHistory: [Borrow!]! @derivedFrom(field: "userReserve")
-  rebalanceStableBorrowRateHistory: [RebalanceStableBorrowRate!]! @derivedFrom(field: "userReserve")
+  # rebalanceStableBorrowRateHistory: [RebalanceStableBorrowRate!]! @derivedFrom(field: "userReserve")
   repayHistory: [Repay!]! @derivedFrom(field: "userReserve")
   liquidationCallHistory: [LiquidationCall!]! @derivedFrom(field: "collateralUserReserve")
 }
@@ -446,37 +446,39 @@ type Borrow implements UserTransaction @entity {
 }
 
 # TODO - DK - Jan 12th 2022 - Not really clear this would be very useful. But it could be. Keeping for now
-"""
-Transaction data
-"""
-type UsageAsCollateral implements UserTransaction @entity {
-  "tx hash"
-  id: ID!
-  pool: Pool!
-  user: User!
-  reserve: Reserve!
-  userReserve: UserReserve!
-  fromState: Boolean!
-  toState: Boolean!
-  timestamp: Int!
-}
+#        DK - Jan 13th 2022 - NOT IN MVP, COMMENTED OUT
+# """
+# Transaction data
+# """
+# type UsageAsCollateral implements UserTransaction @entity {
+#   "tx hash"
+#   id: ID!
+#   pool: Pool!
+#   user: User!
+#   reserve: Reserve!
+#   userReserve: UserReserve!
+#   fromState: Boolean!
+#   toState: Boolean!
+#   timestamp: Int!
+# }
 
 # TODO - DK - Jan 12th 2022. Pretty rare that this would happen. And likely I can remove it in the near future
-"""
-Transaction data
-"""
-type RebalanceStableBorrowRate implements UserTransaction @entity {
-  "tx hash"
-  id: ID!
-  pool: Pool!
-  user: User!
-  reserve: Reserve!
-  userReserve: UserReserve!
-  borrowRateFrom: BigInt!
-  borrowRateTo: BigInt!
-  #accruedBorrowInterest: BigInt!
-  timestamp: Int!
-}
+#        DK - Jan 13th 2022 - NOT IN MVP, COMMENTED OUT
+# """
+# Transaction data
+# """
+# type RebalanceStableBorrowRate implements UserTransaction @entity {
+#   "tx hash"
+#   id: ID!
+#   pool: Pool!
+#   user: User!
+#   reserve: Reserve!
+#   userReserve: UserReserve!
+#   borrowRateFrom: BigInt!
+#   borrowRateTo: BigInt!
+#   #accruedBorrowInterest: BigInt!
+#   timestamp: Int!
+# }
 
 """
 Transaction data
@@ -513,18 +515,19 @@ type LiquidationCall implements UserTransaction @entity {
 
 # TODO - DK - Jan 12th 2022 - Can we configure this to be used in a different way? such as, giving a score to a flash loan?
 #                             Or should I just remove flashloans altogether?
-"""
-Transaction data
-"""
-type FlashLoan @entity {
-  "tx hash"
-  id: ID!
-  pool: Pool!
-  reserve: Reserve!
-  target: Bytes!
-  amount: BigInt!
-  totalFee: BigInt!
-  #protocolFee: BigInt!
-  initiator: User!
-  timestamp: Int!
-}
+#        DK - Jan 13th 2022 - NOT IN MVP, COMMENTED OUT
+# """
+# Transaction data
+# """
+# type FlashLoan @entity {
+#   "tx hash"
+#   id: ID!
+#   pool: Pool!
+#   reserve: Reserve!
+#   target: Bytes!
+#   amount: BigInt!
+#   totalFee: BigInt!
+#   #protocolFee: BigInt!
+#   initiator: User!
+#   timestamp: Int!
+# }

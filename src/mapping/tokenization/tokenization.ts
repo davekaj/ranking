@@ -118,9 +118,9 @@ function tokenBurn(event: ethereum.Event, from: Address, value: BigInt, index: B
   poolReserve.totalLiquidity = poolReserve.totalLiquidity.minus(value)
   poolReserve.lifetimeWithdrawals = poolReserve.lifetimeWithdrawals.plus(value)
 
-  if (userReserve.usageAsCollateralEnabledOnUser) {
-    poolReserve.totalLiquidityAsCollateral = poolReserve.totalLiquidityAsCollateral.minus(value)
-  }
+  // if (userReserve.usageAsCollateralEnabledOnUser) {
+  //   poolReserve.totalLiquidityAsCollateral = poolReserve.totalLiquidityAsCollateral.minus(value)
+  // }
   saveReserve(poolReserve, event)
 
   userReserve.lastUpdateTimestamp = event.block.timestamp.toI32()
@@ -163,9 +163,9 @@ function tokenMint(event: ethereum.Event, from: Address, value: BigInt, index: B
     poolReserve.totalLiquidity = poolReserve.totalLiquidity.plus(value)
     poolReserve.lifetimeLiquidity = poolReserve.lifetimeLiquidity.plus(value)
 
-    if (userReserve.usageAsCollateralEnabledOnUser) {
-      poolReserve.totalLiquidityAsCollateral = poolReserve.totalLiquidityAsCollateral.plus(value)
-    }
+    // if (userReserve.usageAsCollateralEnabledOnUser) {
+    //   poolReserve.totalLiquidityAsCollateral = poolReserve.totalLiquidityAsCollateral.plus(value)
+    // }
     saveReserve(poolReserve, event)
     saveUserReserveAHistory(userReserve, event, index)
   } else {
@@ -188,34 +188,35 @@ export function handleATokenTransfer(event: ATokenTransfer): void {
   tokenMint(event, event.params.to, event.params.value, event.params.index)
 
   // TODO: is this really necessary(from v1)? if we transfer aToken we are not moving the collateral (underlying token)
-  let aToken = getOrInitAToken(event.address)
-  let userFromReserve = getOrInitUserReserve(
-    event.params.from,
-    changetype<Address>(aToken.underlyingAssetAddress),
-    event,
-  )
-  let userToReserve = getOrInitUserReserve(
-    event.params.to,
-    changetype<Address>(aToken.underlyingAssetAddress),
-    event,
-  )
+  // DK - Jan 13th 2022 - interesting TODO they outlines. It does seem like it is not needed. I commented it out anyways since I removed the usageAsCollateral part. I think I can delete it, but going to keep it here for now.
+  // let aToken = getOrInitAToken(event.address)
+  // let userFromReserve = getOrInitUserReserve(
+  //   event.params.from,
+  //   changetype<Address>(aToken.underlyingAssetAddress),
+  //   event,
+  // )
+  // let userToReserve = getOrInitUserReserve(
+  //   event.params.to,
+  //   changetype<Address>(aToken.underlyingAssetAddress),
+  //   event,
+  // )
 
-  let reserve = getOrInitReserve(changetype<Address>(aToken.underlyingAssetAddress), event)
-  if (
-    userFromReserve.usageAsCollateralEnabledOnUser &&
-    !userToReserve.usageAsCollateralEnabledOnUser
-  ) {
-    reserve.totalLiquidityAsCollateral = reserve.totalLiquidityAsCollateral.minus(
-      event.params.value,
-    )
-    saveReserve(reserve, event)
-  } else if (
-    !userFromReserve.usageAsCollateralEnabledOnUser &&
-    userToReserve.usageAsCollateralEnabledOnUser
-  ) {
-    reserve.totalLiquidityAsCollateral = reserve.totalLiquidityAsCollateral.plus(event.params.value)
-    saveReserve(reserve, event)
-  }
+  // let reserve = getOrInitReserve(changetype<Address>(aToken.underlyingAssetAddress), event)
+  // if (
+  //   userFromReserve.usageAsCollateralEnabledOnUser &&
+  //   !userToReserve.usageAsCollateralEnabledOnUser
+  // ) {
+  //   reserve.totalLiquidityAsCollateral = reserve.totalLiquidityAsCollateral.minus(
+  //     event.params.value,
+  //   )
+  //   saveReserve(reserve, event)
+  // } else if (
+  //   !userFromReserve.usageAsCollateralEnabledOnUser &&
+  //   userToReserve.usageAsCollateralEnabledOnUser
+  // ) {
+  //   reserve.totalLiquidityAsCollateral = reserve.totalLiquidityAsCollateral.plus(event.params.value)
+  //   saveReserve(reserve, event)
+  // }
 }
 
 export function handleVariableTokenBurn(event: VTokenBurn): void {

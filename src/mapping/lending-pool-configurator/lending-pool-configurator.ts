@@ -119,10 +119,10 @@ export function handleReserveUnfreezed(event: ReserveDeactivated): void {
 
 export function handleCollateralConfigurationChanged(event: CollateralConfigurationChanged): void {
   let reserve = getOrInitReserve(event.params.asset, event)
-  reserve.usageAsCollateralEnabled = false
-  if (event.params.liquidationThreshold.gt(zeroBI())) {
-    reserve.usageAsCollateralEnabled = true
-  }
+  // reserve.usageAsCollateralEnabled = false
+  // if (event.params.liquidationThreshold.gt(zeroBI())) {
+  //   reserve.usageAsCollateralEnabled = true
+  // }
 
   reserve.baseLTVasCollateral = event.params.ltv
   reserve.reserveLiquidationThreshold = event.params.liquidationThreshold
