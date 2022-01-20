@@ -52,6 +52,6 @@
     - I am not going to dig into it too much. But basically it just allows many tokens to be part of the incentives, such as you see on the aave front end.
     - It may allow for multiple incentives controllers to exist, thus accumulating multiple reward tokens, from multiple reserves
 
-# NOT SURE YET
+# Question
 - it might be that the Pool actually has the ID of the LendingPoolAddressesProvider. They share the same
   - this is what it looks like in `handleAddressesProviderRegistered()`

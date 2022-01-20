@@ -35,6 +35,7 @@ a score to that.
 - AAVE liquidity mining
   - time to sell - a token / time weighted score on how quickly you throw it away
   - or do they instantly stake their aave? good question
+    - NOTE - I believe it is autostaked, so what would have to happen is that it would have to be unstaked and then sold right after the 7 day waiting period
 - AAVE staking
   - score for staking / time
   - bonus for early adoption
@@ -48,6 +49,8 @@ a score to that.
   - count of borrows
   - count of repays
   - timing of all those 4. time wieghted score to see how long they been using the protocol
+  - amounts of all those 4
+  - the amount still currently in the protocol, is relevant, but for version past the MVP
   - maybes
     - swaps
     - rebalanceStableBorrowRate
