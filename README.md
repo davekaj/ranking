@@ -2,6 +2,9 @@
 Open Ranking Algorithm creates "rankings" or "scores" for Ethereum accounts based on past transaction history.
 It leverages Subgraphs a lot, but there will be "stitching" together of data from Subgraphs, and other
 data sources, in order to create useful rankings.
+
+## Subgraph(s)
+AAVE Subgraph running [here](https://thegraph.com/hosted-service/subgraph/davekaj/rankings?version=current).
 # How to Score the rankings
 There are a few basic ways in which we will score accounts. With many more added in the future.
 For now they are:
