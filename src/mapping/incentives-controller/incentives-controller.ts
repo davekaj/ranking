@@ -3,10 +3,7 @@ import {
   RewardsAccrued,
   RewardsClaimed,
 } from '../../../generated/templates/AaveIncentivesController/AaveIncentivesController'
-import {
-  ClaimIncentiveCall,
-  IncentivizedAction,
-} from '../../../generated/schema'
+import { ClaimIncentiveCall, IncentivizedAction } from '../../../generated/schema'
 import { getOrInitUser } from '../../helpers/initializers'
 import { getHistoryEntityId } from '../../utils/id-generation'
 
@@ -19,6 +16,7 @@ export function handleRewardsAccrued(event: RewardsAccrued): void {
   user.unclaimedRewards = user.unclaimedRewards.plus(amount)
   user.lifetimeRewards = user.lifetimeRewards.plus(amount)
   user.incentivesLastUpdated = event.block.timestamp.toI32()
+  user.incentivizedActionsCount = user.incentivizedActionsCount + 1
   user.save()
 
   let incentivizedAction = new IncentivizedAction(getHistoryEntityId(event))
@@ -37,6 +35,7 @@ export function handleRewardsClaimedCommon(
   let user = getOrInitUser(userAddress)
   user.unclaimedRewards = user.unclaimedRewards.minus(amount)
   user.incentivesLastUpdated = event.block.timestamp.toI32()
+  user.claimIncentivesCount = user.claimIncentivesCount + 1
   user.save()
 
   let claimIncentive = new ClaimIncentiveCall(getHistoryEntityId(event))

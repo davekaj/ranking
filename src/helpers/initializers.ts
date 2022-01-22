@@ -15,7 +15,7 @@ import {
   zeroBI,
 } from '../utils/converters'
 import { getAtokenId, getReserveId, getUserReserveId } from '../utils/id-generation'
-
+9
 export function getProtocol(): Protocol {
   let protocolId = '1'
   let protocol = Protocol.load(protocolId)
@@ -43,6 +43,13 @@ export function getOrInitUser(address: Address): User {
     user.unclaimedRewards = zeroBI()
     user.incentivesLastUpdated = 0
     user.lifetimeRewards = zeroBI()
+    user.depositCount = 0
+    user.redeemUnderlyingCount = 0
+    user.borrowCount = 0
+    user.repayCount = 0
+    user.liquidationCallCount = 0
+    user.incentivizedActionsCount = 0
+    user.claimIncentivesCount = 0
     user.save()
   }
   return user as User

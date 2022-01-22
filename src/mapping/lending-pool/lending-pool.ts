@@ -53,6 +53,10 @@ export function handleDeposit(event: Deposit): void {
   deposit.amount = depositedAmount
   deposit.timestamp = event.block.timestamp.toI32()
   deposit.save()
+
+  let user = getOrInitUser(event.params.user)
+  user.depositCount = user.depositCount + 1
+  user.save()
 }
 
 export function handleWithdraw(event: Withdraw): void {
@@ -70,6 +74,10 @@ export function handleWithdraw(event: Withdraw): void {
   redeemUnderlying.amount = redeemedAmount
   redeemUnderlying.timestamp = event.block.timestamp.toI32()
   redeemUnderlying.save()
+
+  let user = getOrInitUser(event.params.user)
+  user.redeemUnderlyingCount = user.redeemUnderlyingCount + 1
+  user.save()
 }
 
 export function handleBorrow(event: Borrow): void {
@@ -89,6 +97,10 @@ export function handleBorrow(event: Borrow): void {
   borrow.borrowRateMode = getBorrowRateMode(event.params.borrowRateMode)
   borrow.timestamp = event.block.timestamp.toI32()
   borrow.save()
+
+  let user = getOrInitUser(event.params.user)
+  user.borrowCount = user.borrowCount + 1
+  user.save()
 }
 
 export function handlePaused(event: Paused): void {
@@ -141,6 +153,10 @@ export function handleRepay(event: Repay): void {
   repay.amount = event.params.amount
   repay.timestamp = event.block.timestamp.toI32()
   repay.save()
+
+  let user = getOrInitUser(event.params.user)
+  user.repayCount = user.repayCount + 1
+  user.save()
 }
 
 export function handleLiquidationCall(event: LiquidationCall): void {
@@ -177,6 +193,9 @@ export function handleLiquidationCall(event: LiquidationCall): void {
   liquidationCall.liquidator = event.params.liquidator
   liquidationCall.timestamp = event.block.timestamp.toI32()
   liquidationCall.save()
+
+  user.liquidationCallCount = user.liquidationCallCount + 1
+  user.save()
 }
 
 export function handleFlashLoan(event: FlashLoan): void {
