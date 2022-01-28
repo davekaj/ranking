@@ -14,9 +14,8 @@ type Protocol @entity {
 A Pool represents a group of reserves that can be used to borrow and lend against each others.
 For example, Aave Ethereum has two Pools. The normal Pool and the AMM Pool.
 """
-type Pool
-  @entity { # TODO - dk Jan 13th - I can likely remove some of the Fextra info on the reserve
-  id: ID!
+type Pool @entity {
+  id: ID! # TODO - dk Jan 13th - I can likely remove some of the extra info on the reserve
   protocol: Protocol!
   lendingPool: Bytes
   lendingPoolCollateralManager: Bytes
@@ -47,10 +46,9 @@ type Pool
 """
 A Reserve is a contract that represents 1 underlying token for all a/v/s tokens in a single pool
 """
-type Reserve
-  @entity { # TODO - dk Jan 13th - I can likely remove a lot of extra info on the reserve
+type Reserve @entity {
   "Reserve Address"
-  id: ID!
+  id: ID! # TODO - dk Jan 13th - I can likely remove a lot of extra info on the reserve
   underlyingAsset: Bytes!
   pool: Pool!
   symbol: String!
