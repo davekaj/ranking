@@ -315,7 +315,13 @@ type ClaimIncentiveCall @entity {
 #######################
 # Historical Balances # TODO - DK - Maybe make them explicit on what was paid up or down, rather than the amount. Jan 12th 2022
 #######################             This makes it more in line with what we are building. I think aave built it with a chart in mind
-#                                   It is a bit more in line with the way IncentivizedAction and ClaimIncentiveCall work
+#                                   It is a bit more in line with the way IncentivizedAction and ClaimIncentiveCall work.
+#                                   ...
+#                                   The other note worth mentioning. I don't see a massive advantage to knowing the balance history.
+#                                   These are also derivative to the core borrow, lend, repay, withdraw functions. for example, when
+#                                   _executeBorrow() happens, both the minting of tokens, and the event Borrow is being emitted. 
+#                                   Another way to look at is, is that Comp and Aave will have the same Borrow or Deposit amount. 
+#                                   Yet the way that ATokens or cTokens work, doesnt matter one iota.
 """
 Balance History
 """

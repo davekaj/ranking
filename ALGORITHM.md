@@ -40,3 +40,29 @@ tons of work to be done. This is just the start of it.
 
 ## Considering on chain verfication
 - So a protocol like maple.finance will approve institutional investors. We can use that as well. But it would have to be custom added to the formula.
+
+## Asset amounts being held or borrowed by the User
+- If the users balance is often in risky assets, they should be trusted less
+- If they are in stablecoins, they should be rewarded more points
+- Probably we can assign safety scores to tokens. USDC is safer than MIM
+
+## Maybe we can categorize them into groups
+- as in:
+  - bad credit
+  - neutral credit
+  - good credit
+  - great credit
+  - amazing credit
+- 5 tiers of lending. Specific things would knock you in or out of these categories. Some would be 100% for sure. Others
+  would be less clear
+- The way I was thinking about it previously was that it would just be numbers from 0 to 1000 and that will adjust your lending rate.
+
+## Amount of interest paid, relative to the amount you have been liquidated
+- Basically, if you have borrowed a ton, but never been liquidated, you should be rewarded highly
+- *** THIS CAN BE DONE TODAY
+
+## Ranking status on other protocols
+- It would take a lot to do all of this, for indexing, but of course you could rank other protocols and factor that in. However, as stated before, we only need to focus on the lending protocols to start. They contain most of the value
+
+## Mining of AAVE, or COMP, or others
+- Really I do not see it as super important. It is completely derivative of other, core lending and borrowing functions that users must do. I should leave it out fully for now.
